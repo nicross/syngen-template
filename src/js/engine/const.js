@@ -17,8 +17,12 @@ engine.const = {
   midiReferenceFrequency: 440, // Hz
   midiReferenceNote: 69, // A4
   minFrequency: 20, // Hz
+  movementAcceleration: 1,// m/s^2
+  movementDeceleration: 2,// m/s^2
   movementMaxRotation: Math.PI / 2, // radian/s
   movementMaxVelocity: 2, // m/s
+  movementRotationalAcceleration: Math.PI, // radian/s^2
+  movementRotationalDeceleration: Math.PI, // radian/s^2
   positionRadius: 0.25, // m
   propFadeDuration: 0.005, // s
   reverbActive: true, // Disable for performance
