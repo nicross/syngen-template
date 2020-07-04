@@ -11,17 +11,18 @@ engine.audio.mixer = (() => {
   let masterHighpass,
     masterLowpass
 
-  masterCompensator.gain.value = engine.const.masterCompensatorGain
-  masterCompressor.ratio.value = engine.const.masterCompressorRatio
-  masterCompressor.threshold.value = engine.const.masterCompressorThreshold
-
   masterCompressor.connect(masterCompensator)
   masterCompensator.connect(masterOutput)
   masterOutput.connect(context.destination)
 
-  createFilters()
+  masterCompensator.gain.value = 1
+  masterCompressor.attack.value = engine.const.zeroTime
+  masterCompressor.knee.value = 0
+  masterCompressor.ratio.value = 20
+  masterCompressor.release.value = engine.const.zeroTime
+  masterCompressor.threshold.value = 0
 
-  masterOutput.gain.value = engine.const.zeroGain
+  createFilters()
 
   function createFilters() {
     masterHighpass = context.createBiquadFilter()
@@ -65,8 +66,19 @@ engine.audio.mixer = (() => {
       return input
     },
     master: {
-      input: () => masterInput,
-      output: () => masterOutput,
+      input: masterInput,
+      output: masterOutput,
+      param: {
+        gain: masterOutput.gain,
+        limiter: {
+          attack: masterCompressor.attack,
+          gain: masterCompensator.gain,
+          knee: masterCompressor.knee,
+          ratio: masterCompressor.ratio,
+          release: masterCompressor.release,
+          threshold: masterCompressor.threshold,
+        },
+      },
     },
     rebuildFilters: function () {
       destroyFilters()
