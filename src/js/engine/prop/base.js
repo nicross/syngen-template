@@ -17,6 +17,7 @@ engine.prop.base = {
     this.angleDelta = 0
     this.jerk = 0
     this.jerkDelta = 0
+    this.periodic = {}
     this.radius = radius
     this.shouldCull = false
     this.spawnAngle = this.angle
@@ -70,6 +71,48 @@ engine.prop.base = {
       y: this.y - this.radius,
     }
   },
+  handlePeriodic: function ({
+    delay = () => 0,
+    key = '',
+    trigger = () => Promise.resolve(),
+  } = {}) {
+    if (!(key in this.periodic)) {
+      this.periodic[key] = {
+        active: false,
+        timer: delay() * Math.random(),
+      }
+    }
+
+    const periodic = this.periodic[key]
+
+    if (periodic.active) {
+      return this
+    }
+
+    if (periodic.timer < 0) {
+      periodic.timer = delay()
+    }
+
+    periodic.timer -= engine.loop.delta()
+
+    if (periodic.timer <= 0) {
+      const result = trigger() || Promise.resolve()
+      periodic.active = true
+      periodic.timer = -Infinity // XXX: Force delay() next inactive frame
+      result.then(() => periodic.active = false)
+    }
+
+    return this
+  },
+  hasPeriodic: function (key) {
+    return key in this.periodic
+  },
+  isPeriodicActive: function (key) {
+    return this.periodic[key] && this.periodic[key].active
+  },
+  isPeriodicPending: function (key) {
+    return this.periodic[key] && !this.periodic[key].active
+  },
   recalculate: function (delta = 0) {
     const position = engine.position.get(),
       relative = engine.utility.toRelativeCoordinates(position, this)
@@ -87,6 +130,10 @@ engine.prop.base = {
       ...relative,
     })
 
+    return this
+  },
+  resetPeriodic: function (key) {
+    delete this.periodic[key]
     return this
   },
   update: function ({
