@@ -5,8 +5,8 @@ A spatial sound and synthesis engine for accessible audio game development and e
 This repository provides a basic skeleton for getting started with any project.
 
 Its JavaScript code is split into three namespaces:
-- The `engine` namespace provides a light wrapper around the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) with tools to quickly build synths and position them in two-dimensional space.
-Its event loop fires each frame to update objects and core systems and can be subscribed to by userland code.
+- The `engine` namespace provides a light wrapper around the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) with tools to quickly build synths and position them as props on a two-dimensional stage.
+Its event loop fires each frame to update props and core systems and can be subscribed to by userland code.
 - The `content` namespace is a blank canvas intended for organizing userland code like props and additional systems.
 For larger projects it's helpful to divide it into smaller sub-namespaces.
 - The `app` namespace provides a skeleton and tools for managing a user interface and handling input.
@@ -28,7 +28,7 @@ This example shows how to define a prop with configurable options and instantiat
 
 ```js
 // Invent the prop, inherits from engine.prop.base
-content.prop.tone = engine.utility.inventProp({
+content.prop.tone = engine.prop.base.invent({
   // Called whenever instantiated (after engine.prop.base.construct())
   onConstruct: function ({
     color = 1,

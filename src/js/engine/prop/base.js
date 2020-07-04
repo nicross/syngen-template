@@ -60,6 +60,9 @@ engine.prop.base = {
 
     return this
   },
+  invent: function (definition) {
+    return engine.utility.inventProp(definition, this)
+  },
   onConstruct: () => {},
   onDestroy: () => {},
   onUpdate: () => {},
