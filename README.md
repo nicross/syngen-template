@@ -16,11 +16,11 @@ Use `app.utility.focus` to improve keyboard and screen reader accessibility.
 The `public` directory holds all code that is distributed to the public, including the main index file which defines the interface and launches the experience.
 Additional assets like fonts and images should live here.
 
-The `build` process combines all source files and outputs them into the `public/` directory.
+The `build` process combines all source files and outputs them into the `public` directory.
 This process _must_ be run before playing the first time or for any changes to be reflected.
-Whenever new sources are created they should be added to `Gulpfile.js` in the correct order.
+Whenever new sources are created they should be added to `Gulpfile.js` in the correct order (i.e. without conflicts).
 
-The `dist` process creates distributable archives with the HTML5 build and an [Electron](https://electronjs.org) build targeting the current OS.
+The `dist` process creates distributable archives within the `dist` directory containing the HTML5 build and an [Electron](https://electronjs.org) build targeting the current OS.
 These files can then be shared on platforms like [itch.io](https://itch.io).
 
 ### Basic synthesis
@@ -36,20 +36,14 @@ content.prop.tone = engine.utility.inventProp({
     gain = 1,
     type = 'sine',
   } = {}) {
-    // Define a simple synth decorated with a lowpass filter
-    this.synth = engine.audio.synth.filtered(
-      engine.audio.synth.createSimple({
-        type,
-      })
-    )
-
-    // Set its initial parameters
-    this.synth.filter.frequency.value = frequency * color
-    this.synth.param.frequency.value = frequency
-    this.synth.param.gain.value = gain
-
-    // Connect the synth to the prop output
-    this.synth.output.connect(this.output.input)
+    // Define a simple synth decorated with a lowpass filter and connect to prop output
+    this.synth = engine.audio.synth.createSimple({
+      frequency,
+      gain,
+      type,
+    }).filtered({
+      frequency: frequency * color,
+    }).connect(this.output.input)
   },
   // Called whenever destroyed (after engine.prop.base.destroy())
   onDestroy: function () {

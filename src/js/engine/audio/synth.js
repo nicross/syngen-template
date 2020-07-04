@@ -1,6 +1,5 @@
 'use strict'
 
-// TODO: Separate synths into separate files
 engine.audio.synth = {}
 
 engine.audio.synth.assign = function (synth, key, plugin) {
@@ -69,6 +68,9 @@ engine.audio.synth.chainStop = function (synth, plugin) {
 }
 
 engine.audio.synth.createAdditive = ({
+  detune = 0,
+  frequency = 440,
+  gain = engine.const.zeroGain,
   harmonic: harmonicParams = [],
   when = engine.audio.time(),
 } = {}) => {
@@ -118,10 +120,15 @@ engine.audio.synth.createAdditive = ({
     }
   })
 
-  output.gain.value = engine.const.zeroGain
   sum.connect(output)
 
-  return {
+  engine.audio.synth.setAudioParams(
+    [detuneConstant.offset, detune],
+    [frequencyConstant.offset, frequency],
+    [output.gain, gain],
+  )
+
+  return engine.audio.synth.decorate({
     _chain: sum,
     harmonic: harmonics,
     output,
@@ -143,21 +150,28 @@ engine.audio.synth.createAdditive = ({
 
       return this
     }
-  }
+  })
 }
 
 engine.audio.synth.createAm = ({
+  carrierDetune = 0,
+  carrierFrequency = 440,
+  carrierGain: carrierGainAmount = 1,
   carrierType = 'sine',
-  modulatorType = 'sine',
-  modulatorWhen,
+  gain = engine.const.zeroGain,
+  modDepth: modDepthAmount = engine.const.zeroGain,
+  modDetune = 0,
+  modFrequency = 0,
+  modType = 'sine',
+  modWhen,
   when = engine.audio.time(),
 } = {}) => {
   const context = engine.audio.context()
 
   const carrierGain = context.createGain(),
     carrierOscillator = context.createOscillator(),
-    modulatorDepth = context.createGain(),
-    modulatorOscillator = context.createOscillator(),
+    modDepth = context.createGain(),
+    modOscillator = context.createOscillator(),
     output = context.createGain()
 
   carrierGain.connect(output)
@@ -166,33 +180,33 @@ engine.audio.synth.createAm = ({
   carrierOscillator.type = carrierType
   carrierOscillator.start(when)
 
-  modulatorDepth.connect(carrierGain.gain)
-  modulatorOscillator.connect(modulatorDepth)
-  modulatorOscillator.type = modulatorType
-  modulatorOscillator.start(modulatorWhen || when)
+  modDepth.connect(carrierGain.gain)
+  modOscillator.connect(modDepth)
+  modOscillator.type = modType
+  modOscillator.start(modWhen || when)
 
-  output.gain.value = engine.const.zeroGain
+  engine.audio.synth.setAudioParams(
+    [carrierGain.gain, carrierGainAmount],
+    [carrierOscillator.detune, carrierDetune],
+    [carrierOscillator.frequency, carrierFrequency],
+    [modDepth.gain, modDepthAmount],
+    [modOscillator.detune, modDetune],
+    [modOscillator.frequency, modFrequency],
+    [output.gain, gain],
+  )
 
-  return {
+  return engine.audio.synth.decorate({
     _chain: carrierGain,
-    carrier: {
-      gain: carrierGain,
-      oscillator: carrierOscillator,
-    },
-    modulator: {
-      depth: modulatorDepth,
-      oscillator: modulatorOscillator,
-    },
     output,
     param: {
-      baseGain: carrierGain.gain,
+      carrierGain: carrierGain.gain,
       detune: carrierOscillator.detune,
       frequency: carrierOscillator.frequency,
       gain: output.gain,
       mod: {
-        depth: modulatorDepth.gain,
-        detune: modulatorOscillator.detune,
-        frequency: modulatorOscillator.frequency,
+        depth: modDepth.gain,
+        detune: modOscillator.detune,
+        frequency: modOscillator.frequency,
       },
     },
     stop: function (when = engine.audio.time()) {
@@ -201,80 +215,101 @@ engine.audio.synth.createAm = ({
       }
 
       carrierOscillator.stop(when)
-      modulatorOscillator.stop(when)
+      modOscillator.stop(when)
 
       return this
     },
-  }
+  })
 }
 
 engine.audio.synth.createAmBuffer = ({
   buffer,
-  modulatorType = 'sine',
-  modulatorWhen,
+  carrierGain: carrierGainAmount = 1,
+  detune = 0,
+  gain = engine.const.zeroGain,
+  loop = true,
+  loopEnd,
+  loopStart,
+  modDepth: modDepthAmount = engine.const.zeroGain,
+  modDetune = 0,
+  modFrequency = 0,
+  modType = 'sine',
+  modWhen,
   rate = 1,
   when = engine.audio.time(),
 } = {}) => {
   const context = engine.audio.context()
 
   const carrierGain = context.createGain(),
-    carrierSource = context.createBufferSource(),
-    modulatorDepth = context.createGain(),
-    modulatorOscillator = context.createOscillator(),
-    output = context.createGain()
+    modDepth = context.createGain(),
+    modOscillator = context.createOscillator(),
+    output = context.createGain(),
+    source = context.createBufferSource()
 
   carrierGain.connect(output)
 
-  carrierSource.buffer = buffer
-  carrierSource.loop = true
-  carrierSource.playbackRate.value = rate
-  carrierSource.connect(carrierGain)
-  carrierSource.start(when, engine.utility.random.float(0, buffer.length))
+  source.buffer = buffer
+  source.loop = loop
+  source.connect(carrierGain)
+  source.start(when, engine.utility.random.float(0, buffer.length))
 
-  modulatorDepth.connect(carrierGain.gain)
-  modulatorOscillator.connect(modulatorDepth)
-  modulatorOscillator.type = modulatorType
-  modulatorOscillator.start(modulatorWhen || when)
+  if (loop && loopEnd !== undefined) {
+    source.loopEnd = loopEnd
+  }
 
-  output.gain.value = engine.const.zeroGain
+  if (loop && loopStart !== undefined) {
+    source.loopStart = loopStart
+  }
 
-  return {
+  modDepth.connect(carrierGain.gain)
+  modOscillator.connect(modDepth)
+  modOscillator.type = modType
+  modOscillator.start(modWhen || when)
+
+  engine.audio.synth.setAudioParams(
+    [carrierGain.gain, carrierGainAmount],
+    [source.detune, detune],
+    [source.playbackRate, rate],
+    [modDepth.gain, modDepthAmount],
+    [modOscillator.detune, modDetune],
+    [modOscillator.frequency, modFrequency],
+    [output.gain, gain],
+  )
+
+  return engine.audio.synth.decorate({
     _chain: carrierGain,
-    carrier: {
-      gain: carrierGain,
-      source: carrierSource,
-    },
-    modulator: {
-      depth: modulatorDepth,
-      oscillator: modulatorOscillator,
-    },
     output,
     param: {
-      baseGain: carrierGain.gain,
-      detune: carrierSource.detune,
+      carrierGain: carrierGain.gain,
+      detune: source.detune,
       gain: output.gain,
       mod: {
-        depth: modulatorDepth.gain,
-        detune: modulatorOscillator.detune,
-        frequency: modulatorOscillator.frequency,
+        depth: modDepth.gain,
+        detune: modOscillator.detune,
+        frequency: modOscillator.frequency,
       },
-      rate: carrierSource.playbackRate,
+      rate: source.playbackRate,
     },
     stop: function (when = engine.audio.time()) {
-      carrierSource.onended = () => {
+      source.onended = () => {
         output.disconnect()
       }
 
-      carrierSource.stop(when)
-      modulatorOscillator.stop(when)
+      source.stop(when)
+      modOscillator.stop(when)
 
       return this
     },
-  }
+  })
 }
 
 engine.audio.synth.createBuffer = ({
   buffer,
+  detune = 0,
+  gain = engine.const.zeroGain,
+  loop = true,
+  loopEnd,
+  loopStart,
   rate = 1,
   when = engine.audio.time(),
 } = {}) => {
@@ -284,14 +319,25 @@ engine.audio.synth.createBuffer = ({
     source = context.createBufferSource()
 
   source.buffer = buffer
-  source.loop = true
-  source.playbackRate.value = rate
+  source.loop = loop
   source.connect(output)
   source.start(when, engine.utility.random.float(0, buffer.length))
 
-  output.gain.value = engine.const.zeroGain
+  if (loop && loopEnd !== undefined) {
+    source.loopEnd = loopEnd
+  }
 
-  return {
+  if (loop && loopStart !== undefined) {
+    source.loopStart = loopStart
+  }
+
+  engine.audio.synth.setAudioParams(
+    [source.detune, detune],
+    [source.playbackRate, rate],
+    [output.gain, gain],
+  )
+
+  return engine.audio.synth.decorate({
     _chain: source,
     output,
     param: {
@@ -309,51 +355,57 @@ engine.audio.synth.createBuffer = ({
 
       return this
     },
-  }
+  })
 }
 
 engine.audio.synth.createFm = ({
+  carrierDetune = 0,
+  carrierFrequency = 440,
   carrierType = 'sine',
-  modulatorType = 'sine',
-  modulatorWhen,
+  gain = engine.const.zeroGain,
+  modDepth: modDepthAmount = 0,
+  modDetune = 0,
+  modFrequency = 0,
+  modType = 'sine',
+  modWhen,
   when = engine.audio.time(),
 } = {}) => {
   const context = engine.audio.context()
 
   const carrierOscillator = context.createOscillator(),
-    modulatorDepth = context.createGain(),
-    modulatorOscillator = context.createOscillator(),
+    modDepth = context.createGain(),
+    modOscillator = context.createOscillator(),
     output = context.createGain()
 
   carrierOscillator.connect(output)
   carrierOscillator.type = carrierType
   carrierOscillator.start(when)
 
-  modulatorDepth.connect(carrierOscillator.frequency)
-  modulatorOscillator.connect(modulatorDepth)
-  modulatorOscillator.type = modulatorType
-  modulatorOscillator.start(modulatorWhen || when)
+  modDepth.connect(carrierOscillator.frequency)
+  modOscillator.connect(modDepth)
+  modOscillator.type = modType
+  modOscillator.start(modWhen || when)
 
-  output.gain.value = engine.const.zeroGain
+  engine.audio.synth.setAudioParams(
+    [carrierOscillator.detune, carrierDetune],
+    [carrierOscillator.frequency, carrierFrequency],
+    [modDepth.gain, modDepthAmount],
+    [modOscillator.detune, modDetune],
+    [modOscillator.frequency, modFrequency],
+    [output.gain, gain],
+  )
 
-  return {
+  return engine.audio.synth.decorate({
     _chain: carrierOscillator,
-    carrier: {
-      oscillator: carrierOscillator,
-    },
-    modulator: {
-      depth: modulatorDepth,
-      oscillator: modulatorOscillator,
-    },
     output,
     param: {
       detune: carrierOscillator.detune,
       frequency: carrierOscillator.frequency,
       gain: output.gain,
       mod: {
-        depth: modulatorDepth.gain,
-        detune: modulatorOscillator.detune,
-        frequency: modulatorOscillator.frequency,
+        depth: modDepth.gain,
+        detune: modOscillator.detune,
+        frequency: modOscillator.frequency,
       },
     },
     stop: function (when = engine.audio.time()) {
@@ -362,48 +414,17 @@ engine.audio.synth.createFm = ({
       }
 
       carrierOscillator.stop(when)
-      modulatorOscillator.stop(when)
+      modOscillator.stop(when)
 
       return this
     },
-  }
-}
-
-// XXX: Utility, incompatible with chaining
-// TODO: Make compatible with chaining (_chain, output, stop)
-engine.audio.synth.createGrain = ({
-  buffer,
-  detune = 0,
-  duration,
-  loop = false,
-  loopEnd,
-  loopStart,
-  offset,
-  playbackRate = 1,
-  when = engine.audio.time(),
-} = {}) => {
-  const context = engine.audio.context(),
-    source = context.createBufferSource()
-
-  source.buffer = buffer
-  source.detune = detune
-  source.loop = loop
-  source.playbackRate = playbackRate
-
-  if (loop && loopEnd) {
-    source.loopEnd = loopEnd
-  }
-
-  if (loop && loopStart) {
-    source.loopStart = loopStart
-  }
-
-  source.start(when, offset, duration)
-
-  return source
+  })
 }
 
 engine.audio.synth.createLfo = ({
+  depth: depthAmount = 1,
+  detune = 0,
+  frequency = 0,
   type = 'sine',
   when = engine.audio.time(),
 } = {}) => {
@@ -416,17 +437,14 @@ engine.audio.synth.createLfo = ({
   oscillator.connect(depth)
   oscillator.start(when)
 
-  return {
+  engine.audio.synth.setAudioParams(
+    [depth.gain, depthAmount],
+    [oscillator.detune, detune],
+    [oscillator.frequency, frequency],
+  )
+
+  return engine.audio.synth.decorate({
     _chain: oscillator,
-    connect: function (...args) {
-      depth.connect(...args)
-      return this
-    },
-    disconnect: function (...args) {
-      depth.connect(...args)
-      return this
-    },
-    oscillator,
     param: {
       depth: depth.gain,
       detune: oscillator.detune,
@@ -442,13 +460,23 @@ engine.audio.synth.createLfo = ({
 
       return this
     },
-  }
+  })
 }
 
 engine.audio.synth.createMod = ({
+  amodDepth: amodDepthAmount = engine.const.zeroGain,
+  amodDetune = 0,
+  amodFrequency = 0,
   amodType = 'sine',
   amodWhen,
+  carrierDetune = 0,
+  carrierFrequency = 440,
+  carrierGain: carrierGainAmount = 1,
   carrierType = 'sine',
+  gain = engine.const.zeroGain,
+  fmodDepth: fmodDepthAmount,
+  fmodDetune = 0,
+  fmodFrequency = 0,
   fmodType = 'sine',
   fmodWhen,
   when = engine.audio.time(),
@@ -479,30 +507,29 @@ engine.audio.synth.createMod = ({
   fmodOscillator.type = fmodType
   fmodOscillator.start(fmodWhen || when)
 
-  output.gain.value = engine.const.zeroGain
+  engine.audio.synth.setAudioParams(
+    [amodDepth.gain, amodDepthAmount],
+    [amodOscillator.detune, amodDetune],
+    [amodOscillator.frequency, amodFrequency],
+    [carrierGain.gain, carrierGainAmount],
+    [carrierOscillator.detune, carrierDetune],
+    [carrierOscillator.frequency, carrierFrequency],
+    [fmodDepth.gain, fmodDepthAmount],
+    [fmodOscillator.detune, fmodDetune],
+    [fmodOscillator.frequency, fmodFrequency],
+    [output.gain, gain],
+  )
 
-  return {
+  return engine.audio.synth.decorate({
     _chain: carrierGain,
-    amod: {
-      depth: amodDepth,
-      oscillator: amodOscillator,
-    },
-    carrier: {
-      gain: carrierGain,
-      oscillator: carrierOscillator,
-    },
-    fmod: {
-      depth: fmodDepth,
-      oscillator: fmodOscillator,
-    },
-    output: output,
+    output,
     param: {
       amod: {
         depth: amodDepth.gain,
         detune: amodOscillator.detune,
         frequency: amodOscillator.frequency,
       },
-      baseGain: carrierGain.gain,
+      carrierGain: carrierGain.gain,
       fmod: {
         depth: fmodDepth.gain,
         detune: fmodOscillator.detune,
@@ -523,10 +550,13 @@ engine.audio.synth.createMod = ({
 
       return this
     },
-  }
+  })
 }
 
 engine.audio.synth.createPwm = ({
+  detune = 0,
+  frequency = 440,
+  gain = engine.const.zeroGain,
   type = 'sine',
   when = engine.audio.time(),
 } = {}) => {
@@ -541,7 +571,6 @@ engine.audio.synth.createPwm = ({
     width = context.createGain()
 
   oscillator.type = type
-  output.gain.value = engine.const.zeroGain
   shaperOne.curve = engine.audio.shape.one()
   shaperPulse.curve = engine.audio.shape.square()
   width.gain.value = 0
@@ -555,9 +584,14 @@ engine.audio.synth.createPwm = ({
 
   oscillator.start(when)
 
-  return {
+  engine.audio.synth.setAudioParams(
+    [oscillator.detune, detune],
+    [oscillator.frequency, frequency],
+    [output.gain, gain],
+  )
+
+  return engine.audio.synth.decorate({
     _chain: facade,
-    oscillator,
     output,
     param: {
       detune: oscillator.detune,
@@ -575,10 +609,13 @@ engine.audio.synth.createPwm = ({
       return this
     },
     width,
-  }
+  })
 }
 
 engine.audio.synth.createSimple = ({
+  detune = 0,
+  frequency = 440,
+  gain = engine.const.zeroGain,
   type = 'sine',
   when = engine.audio.time(),
 } = {}) => {
@@ -591,11 +628,14 @@ engine.audio.synth.createSimple = ({
   oscillator.type = type
   oscillator.start(when)
 
-  output.gain.value = engine.const.zeroGain
+  engine.audio.synth.setAudioParams(
+    [oscillator.detune, detune],
+    [oscillator.frequency, frequency],
+    [output.gain, gain],
+  )
 
-  return {
+  return engine.audio.synth.decorate({
     _chain: oscillator,
-    oscillator,
     output,
     param: {
       detune: oscillator.detune,
@@ -611,12 +651,81 @@ engine.audio.synth.createSimple = ({
 
       return this
     },
-  }
+  })
 }
 
-engine.audio.synth.filtered = function (synth) {
+engine.audio.synth.decorate = (synth = {}) => {
+  return Object.setPrototypeOf(synth, engine.audio.synth.decoration)
+}
+
+engine.audio.synth.decoration = {
+  assign: function (...args) {
+    return engine.audio.synth.assign(this, ...args)
+  },
+  chain: function (...args) {
+    return engine.audio.synth.chain(this, ...args)
+  },
+  chainAssign: function (...args) {
+    return engine.audio.synth.chainAssign(this, ...args)
+  },
+  chainStop: function (...args) {
+    return engine.audio.synth.chainStop(this, ...args)
+  },
+  connect: function (...args) {
+    this.output.connect(...args)
+    return this
+  },
+  disconnect: function (...args) {
+    this.output.disconnect(...args)
+    return this
+  },
+  filtered: function (...args) {
+    if (!this.filter) {
+      return engine.audio.synth.filtered(this, ...args)
+    }
+
+    return this
+  },
+  shaped: function (...args) {
+    if (!this.shaper) {
+      return engine.audio.synth.shaped(this, ...args)
+    }
+
+    return this
+  },
+}
+
+engine.audio.synth.filtered = function (synth, {
+  detune,
+  gain,
+  frequency,
+  Q,
+  type = 'lowpass',
+} = {}) {
   const filter = engine.audio.context().createBiquadFilter()
+
+  filter.type = type
+
+  engine.audio.synth.setAudioParams(
+    [filter.detune, detune],
+    [filter.gain, gain],
+    [filter.frequency, frequency],
+    [filter.Q, Q],
+  )
+
   return this.chainAssign(synth, 'filter', filter)
+}
+
+engine.audio.synth.setAudioParams = function (...params) {
+  for (const [param, value] of params) {
+    if (param instanceof AudioParam) {
+      if (value !== undefined) {
+        param.value = value
+      }
+    }
+  }
+
+  return this
 }
 
 engine.audio.synth.shaped = function (synth, curve) {
