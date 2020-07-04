@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "license": "UNLICENSED",
-  "main": "app/main.js",
+  "main": "electron/main.js",
   "private": true,
   "devDependencies": {
     "electron": "^9.0.4",
