@@ -68,8 +68,8 @@ engine.audio.synth.chainStop = function (synth, plugin) {
 }
 
 engine.audio.synth.createAdditive = ({
-  detune = 0,
-  frequency = 440,
+  detune,
+  frequency,
   gain = engine.const.zeroGain,
   harmonic: harmonicParams = [],
   when = engine.audio.time(),
@@ -154,14 +154,14 @@ engine.audio.synth.createAdditive = ({
 }
 
 engine.audio.synth.createAm = ({
-  carrierDetune = 0,
-  carrierFrequency = 440,
-  carrierGain: carrierGainAmount = 1,
+  carrierDetune,
+  carrierFrequency,
+  carrierGain: carrierGainAmount,
   carrierType = 'sine',
   gain = engine.const.zeroGain,
-  modDepth: modDepthAmount = engine.const.zeroGain,
-  modDetune = 0,
-  modFrequency = 0,
+  modDepth: modDepthAmount,
+  modDetune,
+  modFrequency,
   modType = 'sine',
   modWhen,
   when = engine.audio.time(),
@@ -224,15 +224,15 @@ engine.audio.synth.createAm = ({
 
 engine.audio.synth.createAmBuffer = ({
   buffer,
-  carrierGain: carrierGainAmount = 1,
-  detune = 0,
+  carrierGain: carrierGainAmount,
+  detune,
   gain = engine.const.zeroGain,
   loop = true,
   loopEnd,
   loopStart,
-  modDepth: modDepthAmount = engine.const.zeroGain,
-  modDetune = 0,
-  modFrequency = 0,
+  modDepth: modDepthAmount,
+  modDetune,
+  modFrequency,
   modType = 'sine',
   modWhen,
   rate = 1,
@@ -305,7 +305,7 @@ engine.audio.synth.createAmBuffer = ({
 
 engine.audio.synth.createBuffer = ({
   buffer,
-  detune = 0,
+  detune,
   gain = engine.const.zeroGain,
   loop = true,
   loopEnd,
@@ -359,13 +359,13 @@ engine.audio.synth.createBuffer = ({
 }
 
 engine.audio.synth.createFm = ({
-  carrierDetune = 0,
-  carrierFrequency = 440,
+  carrierDetune,
+  carrierFrequency,
   carrierType = 'sine',
   gain = engine.const.zeroGain,
-  modDepth: modDepthAmount = 0,
-  modDetune = 0,
-  modFrequency = 0,
+  modDepth: modDepthAmount,
+  modDetune,
+  modFrequency,
   modType = 'sine',
   modWhen,
   when = engine.audio.time(),
@@ -422,9 +422,9 @@ engine.audio.synth.createFm = ({
 }
 
 engine.audio.synth.createLfo = ({
-  depth: depthAmount = 1,
-  detune = 0,
-  frequency = 0,
+  depth: depthAmount,
+  detune,
+  frequency,
   type = 'sine',
   when = engine.audio.time(),
 } = {}) => {
@@ -465,18 +465,18 @@ engine.audio.synth.createLfo = ({
 
 engine.audio.synth.createMod = ({
   amodDepth: amodDepthAmount = engine.const.zeroGain,
-  amodDetune = 0,
-  amodFrequency = 0,
+  amodDetune,
+  amodFrequency,
   amodType = 'sine',
   amodWhen,
-  carrierDetune = 0,
-  carrierFrequency = 440,
-  carrierGain: carrierGainAmount = 1,
+  carrierDetune,
+  carrierFrequency,
+  carrierGain: carrierGainAmount,
   carrierType = 'sine',
   gain = engine.const.zeroGain,
   fmodDepth: fmodDepthAmount,
-  fmodDetune = 0,
-  fmodFrequency = 0,
+  fmodDetune,
+  fmodFrequency,
   fmodType = 'sine',
   fmodWhen,
   when = engine.audio.time(),
@@ -554,8 +554,8 @@ engine.audio.synth.createMod = ({
 }
 
 engine.audio.synth.createPwm = ({
-  detune = 0,
-  frequency = 440,
+  detune,
+  frequency,
   gain = engine.const.zeroGain,
   type = 'sine',
   when = engine.audio.time(),
@@ -613,8 +613,8 @@ engine.audio.synth.createPwm = ({
 }
 
 engine.audio.synth.createSimple = ({
-  detune = 0,
-  frequency = 440,
+  detune,
+  frequency,
   gain = engine.const.zeroGain,
   type = 'sine',
   when = engine.audio.time(),
