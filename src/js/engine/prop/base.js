@@ -1,6 +1,7 @@
 'use strict'
 
 engine.prop.base = {
+  name: 'base',
   construct: function ({
     angle = 0,
     output = engine.audio.mixer.bus.props(),
@@ -63,17 +64,6 @@ engine.prop.base = {
   invent: function (definition) {
     return engine.utility.inventProp(definition, this)
   },
-  onConstruct: () => {},
-  onDestroy: () => {},
-  onUpdate: () => {},
-  rect: function () {
-    return {
-      height: this.radius * 2,
-      width: this.radius * 2,
-      x: this.x - this.radius,
-      y: this.y - this.radius,
-    }
-  },
   handlePeriodic: function ({
     delay = () => 0,
     key = '',
@@ -116,6 +106,9 @@ engine.prop.base = {
   isPeriodicPending: function (key) {
     return this.periodic[key] && !this.periodic[key].active
   },
+  onConstruct: () => {},
+  onDestroy: () => {},
+  onUpdate: () => {},
   recalculate: function (delta = 0) {
     const position = engine.position.get(),
       relative = engine.utility.toRelativeCoordinates(position, this)
@@ -135,6 +128,14 @@ engine.prop.base = {
 
     return this
   },
+  rect: function () {
+    return {
+      height: this.radius * 2,
+      width: this.radius * 2,
+      x: this.x - this.radius,
+      y: this.y - this.radius,
+    }
+  },
   resetPeriodic: function (key) {
     delete this.periodic[key]
     return this
@@ -145,42 +146,44 @@ engine.prop.base = {
   } = {}) {
     this.onUpdate.apply(this, arguments)
 
-    if (!paused) {
-      if (this.angleDelta) {
-        this.angle = engine.utility.normalizeAngle(this.angle + this.angleDelta)
-        this.angleDelta = 0
-      }
-
-      if (this.jerkDelta) {
-        this.jerk += this.jerkDelta
-        this.jerkDelta = 0
-      }
-
-      if (this.jerk) {
-        this.accelerationDelta = (this.accelerationDelta || 0) + this.jerk
-      }
-
-      if (this.accelerationDelta) {
-        this.acceleration += this.accelerationDelta
-        this.accelerationDelta = 0
-      }
-
-      if (this.acceleration) {
-        this.velocityDelta = (this.velocityDelta || 0) + this.acceleration
-      }
-
-      if (this.velocityDelta) {
-        this.velocity += this.velocityDelta
-        this.velocityDelta = 0
-      }
-
-      if (this.velocity) {
-        this.x += Math.cos(this.angle) * this.velocity * delta
-        this.y += Math.sin(this.angle) * this.velocity * delta
-      }
-
-      this.recalculate(delta)
+    if (paused) {
+      return this
     }
+
+    if (this.angleDelta) {
+      this.angle = engine.utility.normalizeAngle(this.angle + this.angleDelta)
+      this.angleDelta = 0
+    }
+
+    if (this.jerkDelta) {
+      this.jerk += this.jerkDelta
+      this.jerkDelta = 0
+    }
+
+    if (this.jerk) {
+      this.accelerationDelta = (this.accelerationDelta || 0) + this.jerk
+    }
+
+    if (this.accelerationDelta) {
+      this.acceleration += this.accelerationDelta
+      this.accelerationDelta = 0
+    }
+
+    if (this.acceleration) {
+      this.velocityDelta = (this.velocityDelta || 0) + this.acceleration
+    }
+
+    if (this.velocityDelta) {
+      this.velocity += this.velocityDelta
+      this.velocityDelta = 0
+    }
+
+    if (this.velocity) {
+      this.x += Math.cos(this.angle) * this.velocity * delta
+      this.y += Math.sin(this.angle) * this.velocity * delta
+    }
+
+    this.recalculate(delta)
 
     return this
   },

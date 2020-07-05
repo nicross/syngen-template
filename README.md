@@ -29,6 +29,7 @@ This example shows how to define a prop with configurable options and instantiat
 ```js
 // Invent the prop, inherits from engine.prop.base
 content.prop.tone = engine.prop.base.invent({
+  name: 'tone',
   // Called whenever instantiated (after engine.prop.base.construct())
   onConstruct: function ({
     color = 1,
