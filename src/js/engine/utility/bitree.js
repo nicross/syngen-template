@@ -24,13 +24,13 @@ engine.utility.bitree.prototype = {
   },
   construct: function ({
     dimension = 'x',
+    maxItems = 12,
     value = -engine.const.maxSafeFloat,
     width = engine.const.maxSafeFloat * 2,
   } = {}) {
-    // TODO: Possibly specify a dimension
-
     this.dimension = dimension
     this.items = []
+    this.maxItems = maxItems
     this.nodes = []
     this.value = value
     this.width = width
@@ -41,7 +41,7 @@ engine.utility.bitree.prototype = {
     return this.clear()
   },
   find: function (query, radius = Infinity) {
-    // XXX: Assumes query has a member with key this.dimension
+    // XXX: Assumes query[this.dimension] exists
 
     if (isFinite(radius) && !this.intersects(query[this.dimension] - radius, radius * 2)) {
       return
@@ -108,7 +108,7 @@ engine.utility.bitree.prototype = {
     return 1
   },
   insert: function (item = {}) {
-    // XXX: Assumes item has a member with key this.dimension
+    // XXX: Assumes item[this.dimension] exists
 
     const index = this.getIndex(item)
 
@@ -119,9 +119,8 @@ engine.utility.bitree.prototype = {
 
     this.items.push(item)
 
-    // TODO: Max items constant
     // TODO: Max depth constant to prevent call stack size exceeded
-    if (this.items.length > 12) {
+    if (this.items.length > this.maxItems) {
       this.split()
     }
 
@@ -161,12 +160,14 @@ engine.utility.bitree.prototype = {
 
     this.nodes[0] = engine.utility.bitree.create({
       dimension: this.dimension,
+      maxItems: this.maxItems,
       value: this.value,
       width,
     })
 
     this.nodes[1] = engine.utility.bitree.create({
       dimension: this.dimension,
+      maxItems: this.maxItems,
       value: this.value + width,
       width,
     })

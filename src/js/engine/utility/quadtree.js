@@ -24,12 +24,14 @@ engine.utility.quadtree.prototype = {
   },
   construct: function ({
     height = engine.const.maxSafeFloat * 2,
+    maxItems = 12,
     width = engine.const.maxSafeFloat * 2,
     x = -engine.const.maxSafeFloat,
     y = -engine.const.maxSafeFloat,
   } = {}) {
     this.height = height
     this.items = []
+    this.maxItems = maxItems
     this.nodes = []
     this.width = width
     this.x = x
@@ -41,7 +43,7 @@ engine.utility.quadtree.prototype = {
     return this.clear()
   },
   find: function (query = {}, radius = Infinity) {
-    // NOTE: query is a struct with x/y members, if within tree then it will be ignored
+    // NOTE: Assumes query.x and query.y exist
 
     if (
          isFinite(radius)
@@ -128,7 +130,7 @@ engine.utility.quadtree.prototype = {
     return 3
   },
   insert: function (item = {}) {
-    // XXX: Assumes item is a prop or otherwise with x/y members
+    // XXX: Assumes item.x and item.y exist
 
     const index = this.getIndex(item)
 
@@ -139,9 +141,8 @@ engine.utility.quadtree.prototype = {
 
     this.items.push(item)
 
-    // TODO: Max items constant
     // TODO: Max depth constant to prevent call stack size exceeded
-    if (this.items.length > 12) {
+    if (this.items.length > this.maxItems) {
       this.split()
     }
 
@@ -191,6 +192,7 @@ engine.utility.quadtree.prototype = {
 
     this.nodes[0] = engine.utility.quadtree.create({
       height,
+      maxItems: this.maxItems,
       width,
       x: this.x,
       y: this.y,
@@ -198,6 +200,7 @@ engine.utility.quadtree.prototype = {
 
     this.nodes[1] = engine.utility.quadtree.create({
       height,
+      maxItems: this.maxItems,
       width,
       x: this.x + width,
       y: this.y,
@@ -205,6 +208,7 @@ engine.utility.quadtree.prototype = {
 
     this.nodes[2] = engine.utility.quadtree.create({
       height,
+      maxItems: this.maxItems,
       width,
       x: this.x,
       y: this.y + height,
@@ -212,6 +216,7 @@ engine.utility.quadtree.prototype = {
 
     this.nodes[3] = engine.utility.quadtree.create({
       height,
+      maxItems: this.maxItems,
       width,
       x: this.x + width,
       y: this.y + height,
