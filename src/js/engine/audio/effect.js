@@ -14,7 +14,7 @@ engine.audio.effect.createDubDelay = function ({
   filter.frequency.value = filterFrequency
   filter.type = filterType
 
-  // NOTE: Rewires filter into feedback loop
+  // Rewire filter into feedback loop
   feedbackDelay.delay.disconnect(feedbackDelay.feedback)
   feedbackDelay.delay.disconnect(feedbackDelay.wet)
   feedbackDelay.delay.connect(filter)
@@ -126,6 +126,7 @@ engine.audio.effect.createMultitapFeedbackDelay = ({
     dry,
     input,
     output,
+    wet,
     param: {
       dry: dry.gain,
       gain: output.gain,
@@ -156,11 +157,10 @@ engine.audio.effect.createMultitapFeedbackDelay = ({
 
       return this
     },
-    wet,
   }
 }
 
-// NOTE: This is not an out-of-the-box solution for phaser, chorus, or flange
+// This is not an out-of-the-box solution for phaser, chorus, or flange
 // Depth and rate values must be exact values, e.g. 20ms delayTime, 1ms depth, 1/2hz rate
 engine.audio.effect.createPhaser = ({
   dry: dryAmount = 1/2,
@@ -210,6 +210,7 @@ engine.audio.effect.createPhaser = ({
     input,
     lfo,
     output,
+    wet,
     param: {
       delay: delay.delayTime,
       depth: depth.gain,
@@ -223,7 +224,6 @@ engine.audio.effect.createPhaser = ({
       lfo.stop(when)
       return this
     },
-    wet,
   }
 }
 
@@ -239,7 +239,7 @@ engine.audio.effect.createPingPongDelay = function (options) {
   splitter.connect(merger, 0, 1)
   splitter.connect(merger, 1, 0)
 
-  // NOTE: Rewires splitter/merger between input and wet
+  // Rewire splitter/merger between input and wet
   feedbackDelay.input.disconnect(feedbackDelay.delay)
   feedbackDelay.input.connect(panner)
   feedbackDelay.feedback.disconnect(feedbackDelay.delay)
@@ -292,11 +292,11 @@ engine.audio.effect.createShaper = ({
 }
 
 engine.audio.effect.createTalkbox = ({
-  dry: dryAmount = 2/3,
+  dry: dryAmount = 0,
   formant0 = engine.audio.formant.createU(),
   formant1 = engine.audio.formant.createA(),
   mix: mixAmount = 1/2,
-  wet: wetAmount = 1/3,
+  wet: wetAmount = 1,
 } = {}) => {
   const context = engine.audio.context(),
     dry = context.createGain(),
@@ -338,7 +338,9 @@ engine.audio.effect.createTalkbox = ({
       formant1,
     ],
     input,
+    mix,
     output,
+    wet,
     param: {
       dry: dry.gain,
       mix: mix.offset,
@@ -348,6 +350,5 @@ engine.audio.effect.createTalkbox = ({
       mix.stop(when)
       return this
     },
-    wet,
   }
 }

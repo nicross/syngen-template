@@ -4,7 +4,7 @@ engine.utility = {}
 
 engine.utility.addInterval = (frequency, interval) => frequency * (2 ** interval)
 
-engine.utility.between = (value, min, max) => value >= min && value <= max // TODO: Does not work with infinities?
+engine.utility.between = (value, min, max) => value >= min && value <= max
 
 engine.utility.centroid = (points = []) => {
   // NOTE: Returns origin if empty set
@@ -37,7 +37,7 @@ engine.utility.choose = (options = [], value = 0) => {
 }
 
 engine.utility.chooseSplice = (options = [], value = 0) => {
-  // NOTE: Like choose but mutates the array
+  // NOTE: Mutates options
   value = engine.utility.clamp(value, 0, 1)
 
   const index = Math.round(value * (options.length - 1))
@@ -137,19 +137,19 @@ engine.utility.distanceRadius = (x1, y1, x2, y2, radius = 0) => {
 }
 
 engine.utility.distanceTheta = (x1, y1, x2, y2, theta) => {
-  // NOTE: Is (x1, y1) ahead (positive) or behind (negative) of (x2, y2) facing theta?
+  // Is (x1, y1) ahead (positive) or behind (negative) of (x2, y2) facing theta?
   return engine.utility.rotatePoint(x1 - x2, y1 - y2, theta).x
 }
 
 engine.utility.distanceToPower = (distance) => {
-  // NOTE: One is added so all distances yield sensible values
+  // XXX: One is added so all distances yield sensible values
   distance = Math.max(1, distance + 1)
 
   const distancePower = distance ** -engine.const.distancePower
   let horizonPower = 1
 
   if (engine.const.distancePowerHorizon) {
-    // NOTE: One is added because distance is offset by one
+    // XXX: One is added because of above
     const distancePowerHorizon = engine.const.streamerRadius + 1
     horizonPower = Math.max(0, distancePowerHorizon - distance) / distancePowerHorizon
     horizonPower **= engine.const.distancePowerHorizonExponent
@@ -232,7 +232,7 @@ engine.utility.lerpLogRandom = ([lowMin, lowMax], [highMin, highMax], value) => 
 }
 
 engine.utility.lerpLogi = (min, max, value, base) => {
-  // NOTE: Equivalent to engine.utility.lerpLog(min, max, value, 1 / base)
+  // Equivalent to engine.utility.lerpLog(min, max, value, 1 / base)
   return engine.utility.lerpLog(max, min, 1 - value, base)
 }
 
@@ -320,8 +320,6 @@ engine.utility.shuffle = (array, random = Math.random) => {
 engine.utility.sign = (value) => value >= 0 ? 1 : -1
 
 engine.utility.subtractRadius = ({x = 0, y = 0} = {}, radius = 0) => {
-  // XXX: distanceRadius() was returning incorrect results
-  // TODO: Look into accuracy of this
   // SEE: https://math.stackexchange.com/a/1630886
   if (radius == 0) {
     return {
@@ -386,7 +384,7 @@ engine.utility.toSubFrequency = (frequency, sub = engine.const.subFrequency) => 
 }
 
 engine.utility.wrap = (value, min = 0, max = 1) => {
-  // NOTE: Treats min and max as the same value, e.g. [min, max)
+  // Treats min and max as the same value, e.g. [min, max)
   const range = max - min
 
   if (value >= max) {
@@ -401,7 +399,7 @@ engine.utility.wrap = (value, min = 0, max = 1) => {
 }
 
 engine.utility.wrapAlternate = (value, min = 0, max = 1) => {
-  // NOTE: Scales values to an oscillation between [min, max]
+  // Scales values to an oscillation between [min, max]
   const range = max - min
   const period = range * 2
 

@@ -1,7 +1,5 @@
 'use strict'
 
-// TODO: Standardize interfaces of returned objects like audio.synth
-// TODO: Separate into individual files
 engine.audio.circuit = {}
 
 // Multiplies input by -scale

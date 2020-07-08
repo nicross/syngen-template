@@ -4,7 +4,6 @@
 // SEE: https://www.researchgate.net/figure/Target-and-reproduced-vowel-formant-frequencies_tbl1_2561802
 // SEE: https://www.reasonstudios.com/blog/thor-demystified-17-filters-pt-5-formant-filters
 // SEE: http://www.ipachart.com
-// TODO: Improve gain and Q for each vowel type
 
 engine.audio.formant = {}
 
@@ -18,11 +17,6 @@ engine.audio.formant.blend = (a, b, mix = 0) => {
     gain: engine.utility.lerp(getGain(a, i), getGain(b, i), mix),
     q: engine.utility.lerp(getQ(a, i), getQ(b, i), mix),
   }))
-}
-
-engine.audio.formant.blendProxy = function (...args) {
-  const c = this.blend(...args)
-  return () => c
 }
 
 engine.audio.formant.create = (frequencies = []) => {
