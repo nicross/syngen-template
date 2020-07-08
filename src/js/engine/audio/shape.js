@@ -57,7 +57,7 @@ engine.audio.shape = (() => {
       srand = engine.utility.srand('engine.audio.shape.createNoise')
 
     const noise = () => srand(-variance, variance),
-      y = (x) => engine.utility.wrapAlternate(x + noise(), 2) - 1
+      y = (x) => engine.utility.wrapAlternate(x + noise(), 0, 2) - 1
 
     for (let i = 0; i < shape.length; i += 1) {
       const x = i * 2 / (samples - 1)

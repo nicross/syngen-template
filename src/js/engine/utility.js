@@ -385,32 +385,42 @@ engine.utility.toSubFrequency = (frequency, sub = engine.const.subFrequency) => 
   return frequency
 }
 
-// TODO: Wrap functions could be more generalized (hardcoded with min of 0)
-engine.utility.wrap = (value, max = 1) => {
-  value = value % max
+engine.utility.wrap = (value, min = 0, max = 1) => {
+  // NOTE: Treats min and max as the same value, e.g. [min, max)
+  const range = max - min
 
-  if (value < 0) {
-    value += max
+  if (value >= max) {
+    return min + ((value - min) % range)
+  }
+
+  if (value < min) {
+    return min + ((value + max) % range)
   }
 
   return value
 }
 
-engine.utility.wrapAlternate = (value, max = 1) => {
-  const period = max * 2
+engine.utility.wrapAlternate = (value, min = 0, max = 1) => {
+  // NOTE: Scales values to an oscillation between [min, max]
+  const range = max - min
+  const period = range * 2
 
   if (value > max) {
-    if (value % period < max) {
-      return value % max
+    value -= min
+
+    if (value % period < range) {
+      return min + (value % range)
     }
-    return max - (value % max)
+
+    return max - (value % range)
   }
 
-  if (value < 0) {
-    if (value % period < -max) {
-      return max + (value % max)
+  if (value < min) {
+    if (Math.abs(value % period) < range) {
+      return max - range + Math.abs(value % range)
     }
-    return -value % max
+
+    return min + range - Math.abs(value % range)
   }
 
   return value
