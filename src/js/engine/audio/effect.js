@@ -249,7 +249,47 @@ engine.audio.effect.createPingPongDelay = function (options) {
   return feedbackDelay
 }
 
-// TODO: Shaper that controls wet/dry of a shapernode, e.g. distortion pedal
+engine.audio.effect.createShaper = ({
+  curve = engine.audio.shape.warm(),
+  dry: dryAmount = 0,
+  inputGain: inputGainAmount = 1,
+  wet: wetAmount = 1,
+} = {}) => {
+  const context = engine.audio.context(),
+    dry = context.createGain(),
+    input = context.createGain(),
+    inputGain = context.createGain(),
+    output = context.createGain(),
+    shaper = context.createWaveShaper(),
+    wet = context.createGain()
+
+  dry.gain.value = dryAmount
+  inputgain.gain.value = inputGainAmount
+  shaper.curve = curve
+  wet.gain.value = wetAmount
+
+  input.connect(dry)
+  input.connect(inputGain)
+  inputGain.connect(shaper)
+  shaper.connect(wet)
+  dry.connect(output)
+  wet.connect(output)
+
+  return {
+    dry,
+    input,
+    inputGain,
+    shaper,
+    output,
+    wet,
+    param: {
+      dry: dry.gain,
+      inputGain: inputGain.gain,
+      outputGain: output.gain,
+      wet: wet.gain,
+    }
+  }
+}
 
 engine.audio.effect.createTalkbox = ({
   dry: dryAmount = 2/3,
