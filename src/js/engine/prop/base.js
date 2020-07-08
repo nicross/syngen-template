@@ -155,7 +155,7 @@ engine.prop.base = {
     }
 
     if (this.angleDelta) {
-      this.angle = engine.utility.normalizeAngle(this.angle + this.angleDelta)
+      this.angle += this.angleDelta
       this.angleDelta = 0
     }
 
