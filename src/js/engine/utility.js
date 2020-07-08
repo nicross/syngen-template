@@ -201,18 +201,6 @@ engine.utility.intersects = (a, b) => {
   return xOverlap && yOverlap
 }
 
-engine.utility.inventProp = (definition, prototype) => {
-  if (!engine.prop.base.isPrototypeOf(prototype)) {
-    prototype = engine.prop.base
-  }
-
-  if (typeof definition == 'function') {
-    definition = definition(prototype)
-  }
-
-  return Object.setPrototypeOf({...definition}, prototype)
-}
-
 engine.utility.isWithinRadius = (point = {}, radius = 0) => {
   const {x: dx, y: dy} = engine.utility.subtractRadius(point, radius)
   return dx == 0 && dy == 0

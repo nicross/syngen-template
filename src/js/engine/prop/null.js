@@ -1,5 +1,5 @@
 'use strict'
 
-engine.prop.null = engine.utility.inventProp({
+engine.prop.null = engine.prop.base.invent({
   name: 'null',
 })

@@ -61,8 +61,12 @@ engine.prop.base = {
 
     return this
   },
-  invent: function (definition) {
-    return engine.utility.inventProp(definition, this)
+  invent: function (definition = {}) {
+    if (typeof definition == 'function') {
+      definition = definition(this)
+    }
+
+    return Object.setPrototypeOf({...definition}, this)
   },
   handlePeriodic: function ({
     delay = () => 0,
