@@ -45,5 +45,9 @@ engine.audio.mixer.auxiliary.reverb = (() => {
       engine.audio.ramp.linear(output.gain, gain, duration)
       return this
     },
+    setImpulse: function (buffer) {
+      convolver.buffer = buffer
+      return this
+    },
   }, pubsub)
 })()
