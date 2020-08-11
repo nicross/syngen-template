@@ -40,7 +40,6 @@ engine.audio.binaural.monaural.prototype = {
     return this
   },
   update: function ({
-    delta,
     x: observerX = 0,
     y: observerY = 0,
   }) {
@@ -67,9 +66,9 @@ engine.audio.binaural.monaural.prototype = {
       filterFrequency = engine.utility.lerpExp(engine.const.acousticShadowFrequency, engine.const.maxFrequency, shadowStrength),
       inputGain = engine.utility.clamp(distancePower, engine.const.zeroGain, 1)
 
-    engine.audio.ramp.linear(this.delay.delayTime, delayTime, delta)
-    engine.audio.ramp.linear(this.filter.frequency, filterFrequency, delta)
-    engine.audio.ramp.linear(this.gain.gain, inputGain, delta)
+    engine.audio.ramp.set(this.delay.delayTime, delayTime)
+    engine.audio.ramp.set(this.filter.frequency, filterFrequency)
+    engine.audio.ramp.set(this.gain.gain, inputGain)
 
     return this
   },

@@ -66,8 +66,8 @@ engine.audio.send.reverb.prototype = {
     const delayTime = engine.utility.clamp(distance / engine.const.speedOfSound, engine.const.zeroTime, 1),
       inputGain = engine.utility.clamp(distancePower * distanceRatio, engine.const.zeroGain, 1)
 
-    this.delay.delayTime.value = delayTime
-    this.input.gain.value = inputGain
+    engine.audio.ramp.set(this.delay.delayTime, delayTime)
+    engine.audio.ramp.set(this.input.gain, inputGain)
 
     return this
   },
