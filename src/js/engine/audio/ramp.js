@@ -57,8 +57,15 @@ engine.audio.ramp.linear = function (audioParam, value, duration = engine.const.
 }
 
 engine.audio.ramp.set = function (audioParam, value) {
-  if (audioParam.value != value) {
-    engine.audio.ramp.linear(audioParam, value)
+  const currentValue = audioParam.value
+
+  if (currentValue == value) {
+    return this
   }
+
+  audioParam.cancelScheduledValues(0)
+  audioParam.setValueAtTime(currentValue, engine.audio.time())
+  audioParam.linearRampToValueAtTime(value, engine.audio.zeroTime())
+
   return this
 }
