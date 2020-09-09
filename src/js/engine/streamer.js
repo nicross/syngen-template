@@ -1,31 +1,33 @@
 engine.streamer = (() => {
-  const propRegistry = new Map(),
-    streamedProps = new Map()
+  const registry = new Map(),
+    registryTree = engine.utility.quadtree.create(),
+    streamed = new Map()
 
   let currentX,
-    currentY
+    currentY,
+    shouldForce = false
 
   function createRegisteredProp(token) {
-    if (!propRegistry.has(token)) {
+    if (!registry.has(token)) {
       return
     }
 
     const streamedProp = engine.streamer.prop.create(
-      propRegistry.get(token)
+      registry.get(token)
     )
 
-    streamedProps.set(token, streamedProp)
+    streamed.set(token, streamedProp)
   }
 
   function destroyStreamedProp(token) {
-    if (!streamedProps.has(token)) {
+    if (!streamed.has(token)) {
       return
     }
 
-    const streamedProp = streamedProps.get(token)
+    const streamedProp = streamed.get(token)
 
     streamedProp.destroy()
-    streamedProps.delete(token)
+    streamed.delete(token)
   }
 
   function generateToken() {
@@ -33,18 +35,14 @@ engine.streamer = (() => {
 
     do {
       token = engine.utility.uuid()
-    } while (propRegistry.has(token))
+    } while (registry.has(token))
 
     return token
   }
 
-  function isWithinRadius(x, y) {
-    return engine.utility.distance(x, y, currentX, currentY) <= engine.const.streamerRadius
-  }
-
   return {
     cullProp: function (token) {
-      const streamedProp = streamedProps.get(token)
+      const streamedProp = streamed.get(token)
 
       if (streamedProp) {
         streamedProp.cull()
@@ -53,85 +51,104 @@ engine.streamer = (() => {
       return this
     },
     deregisterProp: function(token) {
-      propRegistry.delete(token)
+      const registeredProp = registry.get(token)
+
+      if (!registeredProp) {
+        return this
+      }
+
+      registry.delete(token)
+      registryTree.remove(registeredProp)
+
       return this
     },
-    getRegisteredProp: (token) => propRegistry.get(token),
-    getRegisteredProps: () => propRegistry.values(),
-    getStreamedProp: (token) => streamedProps.get(token),
-    getStreamedProps: () => streamedProps.values(),
-    hasRegisteredProp: (token) => propRegistry.has(token),
-    hasStreamedProp: (token) => streamedProps.has(token),
+    destroyStreamedProp: function (token) {
+      destroyStreamedProp(token)
+      return this
+    },
+    getRegisteredProp: (token) => registry.get(token),
+    getRegisteredProps: () => registry.values(),
+    getStreamedProp: (token) => streamed.get(token),
+    getStreamedProps: () => streamed.values(),
+    hasRegisteredProp: (token) => registry.has(token),
+    hasStreamedProp: (token) => streamed.has(token),
     registerProp: function(prototype, options = {}) {
       const token = generateToken()
 
-      propRegistry.set(token, {
-        options,
+      const registeredProp = {
+        options: {
+          ...options,
+          token,
+        },
         prototype,
         token,
-      })
-
-      if (isWithinRadius(options.x, options.y)) {
-        createRegisteredProp(token)
+        x: options.x,
+        y: options.y,
       }
+
+      registry.set(token, registeredProp)
+      registryTree.insert(registeredProp)
+
+      shouldForce = true
 
       return token
     },
     reset: function() {
-      propRegistry.clear()
+      registry.clear()
+      registryTree.clear()
 
-      streamedProps.forEach((streamedProp) => streamedProp.destroy())
-      streamedProps.clear()
+      streamed.forEach((streamedProp) => streamedProp.destroy())
+      streamed.clear()
 
       currentX = null
       currentY = null
+      shouldForce = false
 
       return this
     },
     update: (force = false) => {
       const position = engine.position.get(),
-        positionX = Math.round(position.x),
-        positionY = Math.round(position.y)
+        radius = engine.const.streamerRadius
 
-      if (currentX === positionX && currentY === positionY && !force) {
+      if (!force && !shouldForce && currentX === position.x && currentY === position.y) {
         return this
       }
 
-      currentX = positionX
-      currentY = positionY
+      currentX = position.x
+      currentY = position.y
+      shouldForce = false
 
-      streamedProps.forEach((streamedProp, token) => {
-        if (!streamedProp.prop.shouldCull) {
-          if (isWithinRadius(streamedProp.prop.x, streamedProp.prop.y)) {
-            return
-          }
+      const nowStreaming = new Set()
 
-          if (isWithinRadius(streamedProp.prop.spawnX, streamedProp.prop.spawnY)) {
-            return
-          }
+      const streamable = [
+        ...registryTree.retrieve({
+          height: radius * 2,
+          width: radius * 2,
+          x: currentX - radius,
+          y: currentY - radius,
+        }).map((registeredProp) => ({
+          ...registeredProp,
+          distance: engine.utility.distance(position.x, position.y, registeredProp.x, registeredProp.y),
+        })),
+        ...Array.from(streamed.values()),
+      ].filter((prop) => prop.distance <= radius)
+
+      for (const {token} of streamable) {
+        if (!streamed.has(token)) {
+          createRegisteredProp(token)
         }
+        nowStreaming.add(token)
+      }
 
-        destroyStreamedProp(token)
-      })
-
-      propRegistry.forEach((registeredProp, token) => {
-        if (streamedProps.has(token)) {
-          return
+      for (const token of streamed.keys()) {
+        if (!nowStreaming.has(token)) {
+          destroyStreamedProp(token)
         }
-
-        if (!isWithinRadius(registeredProp.options.x, registeredProp.options.y)) {
-          return
-        }
-
-        createRegisteredProp(token)
-      })
+      }
 
       return this
     },
     updateRegisteredProp: function (token, options = {}) {
-      // XXX: If changing prototype then probably doing it wrong
-      // XXX: If changing a streamed prop then probably doing it wrong
-
       const registeredProp = propRegistry.get(token)
 
       if (!registeredProp) {
@@ -141,6 +158,7 @@ engine.streamer = (() => {
       registeredProp.options = {
         ...registeredProp.options,
         ...options,
+        token,
       }
 
       return this
@@ -148,7 +166,7 @@ engine.streamer = (() => {
   }
 })()
 
-engine.loop.on('frame', ({ paused }) => {
+engine.loop.on('frame', ({paused}) => {
   if (paused) {
     return
   }

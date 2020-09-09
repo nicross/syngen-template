@@ -4,6 +4,7 @@ engine.prop.base = {
     angle = 0,
     output = engine.audio.mixer.bus.props(),
     radius = 0,
+    token,
     x = 0,
     y = 0,
     ...options
@@ -22,6 +23,7 @@ engine.prop.base = {
     this.spawnAngle = this.angle
     this.spawnX = x
     this.spawnY = y
+    this.token = token
     this.velocity = 0
     this.velocityDelta = 0
     this.willCull = false
