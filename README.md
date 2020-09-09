@@ -1,8 +1,12 @@
 # syngen
-A spatial sound and synthesis engine for accessible audio game development and experience design.
+A spatial sound and synthesis framework for accessible audio game development and experience design.
+
+## Disclaimer
+This repository is experimental and subject to change.
+Use at your own risk.
 
 ## Overview
-This repository provides a basic skeleton for getting started with any project.
+This repository provides a basic template for getting started with any project.
 
 Its JavaScript code is split into three namespaces:
 - The `engine` namespace provides a light wrapper around the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) with tools to quickly build synths and position them as props on a two-dimensional stage.
@@ -66,8 +70,13 @@ engine.props.create(content.prop.tone, {
 ```
 
 More advanced applications will likely have managers that handle prop creation and destruction indirectly.
-For example, [soundStrider](https://soundstrider.shiftbacktick.io) has a `content.system.generator` service that generates the game world in chunks and registers their props with `engine.streamer` so they're only using resources when nearby.
+For example, [soundStrider](https://soundstrider.shiftbacktick.io) has a `content.system.generator` service that generates the game world in chunks and registers their props with `engine.streamer` so they're only instantiated when nearby.
 The same strategy could be applied to a particle system or timed sequence.
+
+### Example projects
+- [Audo](https://github.com/nicross/audo)
+- [Kaleidophone](https://github.com/nicross/kaleidophone)
+- [S.E.A.](https://github.com/nicross/sea)
 
 ## Development
 To get started, please  use [npm](https://nodejs.org) to install the required dependencies:
