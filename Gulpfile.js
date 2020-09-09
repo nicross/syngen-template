@@ -149,9 +149,9 @@ function getEngineJs() {
     'src/js/engine.js',
     'src/js/engine/utility.js',
     'src/js/engine/utility/*.js',
+    'src/js/engine/utility/**/*.js',
     'src/js/engine/const.js',
     'src/js/engine/state.js',
-    'src/js/engine/seed.js',
     'src/js/engine/audio.js',
     'src/js/engine/audio/*.js',
     'src/js/engine/audio/buffer/**/*.js',
@@ -160,9 +160,10 @@ function getEngineJs() {
     'src/js/engine/performance.js',
     'src/js/engine/position.js',
     'src/js/engine/prop/base.js',
-    'src/js/engine/prop/*.js',
+    'src/js/engine/prop/null.js',
     'src/js/engine/props.js',
+    'src/js/engine/seed.js',
     'src/js/engine/streamer.js',
-    'src/js/engine/streamer/*.js',
+    'src/js/engine/streamer/prop.js',
   ]
 }
