@@ -73,6 +73,14 @@ More advanced applications will likely have managers that handle prop creation a
 For example, [soundStrider](https://soundstrider.shiftbacktick.io) has a `content.system.generator` service that generates the game world in chunks and registers their props with `engine.streamer` so they're only instantiated when nearby.
 The same strategy could be applied to a particle system or timed sequence.
 
+### Updating syngen
+This template assumes that all code in `src/css`, `src/js/app`, and `src/js/content` is your own.
+The default files in those directories are simply a starting point for new projects.
+
+To ensure that updates can be applied in the future, please avoid making modifications to the `src/js/engine` directory.
+To update to the latest engine, simply overwrite that directory with the contents from this repository.
+Occasionally these updates may require copying changes to your `Gulpfile.js` for engine changes to be reflected.
+
 ### Example projects
 - [Audo](https://github.com/nicross/audo)
 - [Kaleidophone](https://github.com/nicross/kaleidophone)
