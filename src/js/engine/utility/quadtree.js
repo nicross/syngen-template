@@ -150,6 +150,21 @@ engine.utility.quadtree.prototype = {
   intersects: function (rect) {
     return engine.utility.intersects(this, rect)
   },
+  remove: function (item) {
+    if (this.nodes.length) {
+      const index = this.getIndex(item)
+      this.nodes[index].remove(item)
+      return this
+    }
+
+    const index = this.items.indexOf(item)
+
+    if (index != -1) {
+      this.items.splice(index, 1)
+    }
+
+    return this
+  },
   retrieve: function ({
     height = 0,
     width = 0,
