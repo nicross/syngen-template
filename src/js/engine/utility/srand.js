@@ -9,7 +9,7 @@ engine.utility.srand = (...seeds) => {
 
   let seed = engine.utility.hash(
     [
-      engine.const.seed,
+      engine.seed.get(),
       ...seeds,
     ].join(engine.const.seedSeparator)
   )

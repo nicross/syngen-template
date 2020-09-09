@@ -19,7 +19,6 @@ engine.const = {
   propFadeDuration: 0.005, // s
   reverbActive: true, // Disable for performance
   reverbImpulse: 'large', // engine.audio.buffer.impulse[reverbImpulse]
-  seed: 'syngen', // prepended to all engine.utility.srand() instances
   seedSeparator: '~', // separator for arrays used as engine.utility.srand() seeds
   speedOfSound: 343, // m/s
   streamerRadius: 343, // m
