@@ -56,10 +56,11 @@ engine.utility.quadtree.prototype = {
     }
 
     const distance = ({x, y}) => ((x - query.x) ** 2) + ((y - query.y) ** 2),
-      index = this.getIndex(query)
+      index = this.getIndex(query),
+      radius2 = ((radius * (Math.sqrt(2) / 2)) ** 2) * 2
 
     if (index == -1) {
-      let minDistance = radius,
+      let minDistance = radius2,
         result
 
       for (const item of this.items) {
@@ -79,7 +80,7 @@ engine.utility.quadtree.prototype = {
     }
 
     let result = this.nodes[index].find(query, radius)
-    let minDistance = result ? distance(result) : Infinity
+    let minDistance = result ? distance(result) : radius2
 
     for (const node of this.nodes) {
       if (node === this.nodes[index]) {
