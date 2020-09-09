@@ -1,5 +1,3 @@
-'use strict'
-
 engine.audio.mixer.auxiliary.reverb = (() => {
   const context = engine.audio.context(),
     input = context.createGain(),

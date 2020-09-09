@@ -1,5 +1,3 @@
-'use strict'
-
 engine.props = (() => {
   const archetypes = new Map(),
     pool = new Set()

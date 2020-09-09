@@ -1,5 +1,3 @@
-'use strict'
-
 engine.audio.ramp = {}
 
 engine.audio.ramp.createMachine = function (audioParam, rampFn) {

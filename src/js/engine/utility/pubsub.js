@@ -1,5 +1,3 @@
-'use strict'
-
 engine.utility.pubsub = {}
 
 engine.utility.pubsub.create = function (...args) {

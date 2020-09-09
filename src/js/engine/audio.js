@@ -1,5 +1,3 @@
-'use strict'
-
 engine.audio = (() => {
   const context = new AudioContext({
     latencyHint: engine.const.audioLatencyHint,

@@ -1,5 +1,3 @@
-'use strict'
-
 engine.streamer.prop = {}
 
 engine.streamer.prop.create = function (...args) {

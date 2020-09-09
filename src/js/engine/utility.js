@@ -1,7 +1,3 @@
-'use strict'
-
-engine.utility = {}
-
 engine.utility.addInterval = (frequency, interval) => frequency * (2 ** interval)
 
 engine.utility.between = (value, min, max) => value >= min && value <= max

@@ -1,5 +1,3 @@
-'use strict'
-
 engine.state = engine.utility.pubsub.decorate({
   export: function () {
     const data = {

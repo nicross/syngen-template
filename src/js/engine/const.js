@@ -1,5 +1,3 @@
-'use strict'
-
 engine.const = {
   acousticShadowFrequency: 343 / 0.1524, // speedOfSound / binauralHeadWidth
   audioLatencyHint: 1/60, // SEE: AudioContextOptions.latencyHint

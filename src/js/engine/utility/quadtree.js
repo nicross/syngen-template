@@ -1,5 +1,3 @@
-'use strict'
-
 engine.utility.quadtree = {}
 
 engine.utility.quadtree.create = function (...args) {

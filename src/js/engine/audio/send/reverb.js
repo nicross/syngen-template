@@ -1,5 +1,3 @@
-'use strict'
-
 engine.audio.send.reverb = {}
 
 engine.audio.send.reverb.create = function (...args) {

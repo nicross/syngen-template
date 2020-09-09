@@ -1,5 +1,3 @@
-'use strict'
-
 engine.utility.machine = {}
 
 engine.utility.machine.create = function (...args) {

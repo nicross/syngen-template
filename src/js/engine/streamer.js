@@ -1,5 +1,3 @@
-'use strict'
-
 engine.streamer = (() => {
   const propRegistry = new Map(),
     streamedProps = new Map()

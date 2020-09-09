@@ -1,5 +1,3 @@
-'use strict'
-
 engine.movement = (() => {
   const defaults = {
     angle: 0,

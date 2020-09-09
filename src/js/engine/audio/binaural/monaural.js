@@ -1,5 +1,3 @@
-'use strict'
-
 engine.audio.binaural.monaural = {}
 
 engine.audio.binaural.monaural.create = function (...args) {

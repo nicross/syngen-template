@@ -1,5 +1,3 @@
-'use strict'
-
 engine.prop.base = {
   name: 'base',
   construct: function ({

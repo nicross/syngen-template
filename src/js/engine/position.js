@@ -1,5 +1,3 @@
-'use strict'
-
 engine.position = (() => {
   const defaults = {
     angle: 0,
