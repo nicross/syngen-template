@@ -55,6 +55,6 @@ engine.audio.ramp.linear = function (audioParam, value, duration = engine.const.
 }
 
 engine.audio.ramp.set = function (audioParam, value) {
-  engine.audio.ramp.linear(audioParam, value, engine.const.zeroTime)
+  engine.audio.ramp.linear(audioParam, value, engine.performance.delta())
   return this
 }
