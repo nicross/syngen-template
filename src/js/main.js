@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+engine.ready(() => {
   app.activate()
   engine.loop.start()
 })

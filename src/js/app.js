@@ -1,7 +1,6 @@
-const app = engine.utility.pubsub.decorate({
+const app = {
   activate: function () {
     document.querySelector('.a-app').classList.add('a-app-active')
-    this.pubsub.emit('activate')
     return this
   },
   isElectron: () => typeof ElectronApi != 'undefined',
@@ -13,4 +12,4 @@ const app = engine.utility.pubsub.decorate({
     return this
   },
   utility: {},
-})
+}
