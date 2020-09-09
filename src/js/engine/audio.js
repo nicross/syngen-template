@@ -1,7 +1,5 @@
 engine.audio = (() => {
-  const context = new AudioContext({
-    latencyHint: engine.const.audioLatencyHint,
-  })
+  const context = new AudioContext()
 
   return {
     buffer: {
@@ -9,7 +7,7 @@ engine.audio = (() => {
       noise: {},
     },
     context: () => context,
-    nyquist: (multiple = 1) => multiple * context.sampleRate / 2,
+    nyquist: (coefficient = 1) => coefficient * context.sampleRate / 2,
     send: {},
     start: function () {
       context.resume()

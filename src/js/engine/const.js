@@ -1,7 +1,6 @@
 engine.const = {
   acousticShadowFrequency: 343 / 0.1524, // speedOfSound / binauralHeadWidth
-  audioLatencyHint: 1/60, // SEE: AudioContextOptions.latencyHint
-  audioLookaheadTime: 0, // TODO: Implement support for non-zero values
+  audioLookaheadTime: 0, // TODO: Improve support for non-zero values
   binauralHeadWidth: 0.1524, // m
   binauralShadowOffset: Math.PI / 4, // radian offset of each ear from +/- 90 deg
   binauralShadowRolloff: 1, // m
