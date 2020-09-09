@@ -52,14 +52,4 @@ app.controls = (() => {
   }
 })()
 
-engine.loop.on('frame', ({paused}) => {
-  app.controls.update()
-
-  if (paused) {
-    return
-  }
-
-  engine.movement.update({
-    ...app.controls.game(),
-  })
-})
+engine.loop.on('frame', () => app.controls.update())

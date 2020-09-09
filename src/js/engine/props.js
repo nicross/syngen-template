@@ -52,7 +52,6 @@ engine.props = (() => {
 
 engine.loop.on('frame', ({delta, paused}) => engine.props.update({
   delta,
-  movement: engine.movement.get(),
   paused,
   position: engine.position.get(),
 }))

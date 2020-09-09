@@ -31,25 +31,8 @@ engine.position = (() => {
       state.angle = engine.utility.normalizeAngle(state.angle + amount)
       return this
     },
-    update: function () {
-      const {angle, deltaRotation, deltaVelocity} = engine.movement.get()
-
-      state.angle = engine.utility.normalizeAngle(state.angle + deltaRotation)
-      state.x += deltaVelocity * Math.cos(state.angle + angle)
-      state.y += deltaVelocity * Math.sin(state.angle + angle)
-
-      return this
-    },
   }
 })()
-
-engine.loop.on('frame', ({paused}) => {
-  if (paused) {
-    return
-  }
-
-  engine.position.update()
-})
 
 engine.state.on('export', (data = {}) => data.position = engine.position.get())
 engine.state.on('import', (data = {}) => engine.position.set(data.position))
