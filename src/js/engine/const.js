@@ -24,6 +24,11 @@ engine.const = {
   speedOfSound: 343, // m/s
   streamerRadius: 343, // m
   subFrequency: 60, // Hz
+  tau: Math.PI * 2, // circle constant
+  unit: 1, // 1D line segment
+  unit2: Math.sqrt(2) / 2, // 2D unit circle
+  unit3: Math.sqrt(3) / 3, // 3D unit sphere
+  unit4: Math.sqrt(4) / 4, // 4D unit hypersphere
   zero: 10 ** -32, // Close enough to zero
   zeroDb: -96, // dB, close enough to silence
   zeroGain: engine.utility.fromDb(-96), // engine.utility.fromDb(zeroDb)
