@@ -175,7 +175,19 @@ engine.utility.octree.prototype = {
     return this
   },
   intersects: function (rect) {
-    return engine.utility.intersects(this, rect)
+    // TODO: Update engine.utility.intersects with 3D
+    const between = engine.utility.between
+
+    const xOverlap = between(this.x, rect.x, rect.x + rect.width)
+      || between(rect.x, this.x, this.x + this.width)
+
+    const yOverlap = between(this.y, rect.y, rect.y + rect.height)
+      || between(rect.y, this.y, this.y + this.height)
+
+    const zOverlap = between(this.z, rect.z, rect.z + rect.depth)
+      || between(rect.z, this.z, this.z + this.depth)
+
+    return xOverlap && yOverlap && zOverlap
   },
   retrieve: function ({
     depth = 0,
