@@ -4,10 +4,8 @@ app.controls = (() => {
 
   let gameCache = {
     rotate: 0,
-    translate: {
-      radius: 0,
-      theta: 0,
-    },
+    x: 0,
+    y: 0,
   }
 
   return {
@@ -19,15 +17,11 @@ app.controls = (() => {
     updateGame: function () {
       gameCache = {
         rotate: 0,
-        translate: {
-          radius: 0,
-          theta: 0,
-        },
+        x: 0,
+        y: 0,
         ...this.gamepad.game(),
         ...this.keyboard.game(),
       }
-
-      gameCache.translate.theta = engine.utility.normalizeAngleSigned(gameCache.translate.theta)
 
       return this
     },

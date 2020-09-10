@@ -1,133 +1,71 @@
-app.controls.keyboard = (() => {
-  const controls = {
-    ArrowDown: false,
-    ArrowLeft: false,
-    ArrowRight: false,
-    ArrowUp: false,
-    Backspace: false,
-    Delete: false,
-    Enter: false,
-    Escape: false,
-    KeyA: false,
-    KeyD: false,
-    KeyE: false,
-    KeyQ: false,
-    KeyS: false,
-    KeyW: false,
-    Numpad4: false,
-    Numpad5: false,
-    Numpad6: false,
-    Numpad7: false,
-    Numpad8: false,
-    Numpad9: false,
-    NumpadDecimal: false,
-    NumpadEnter: false,
-    Space: false,
-  }
+app.controls.keyboard = {
+  game: () => {
+    const keys = engine.input.keyboard.get(),
+      state = {}
 
-  window.addEventListener('keydown', (e) => {
-    if (e.repeat) {
-      return
+    const moveBackward = keys.ArrowDown || keys.KeyS || keys.Numpad5,
+      moveForward = keys.ArrowUp || keys.KeyW || keys.Numpad8,
+      strafeLeft = keys.KeyA || keys.Numpad4,
+      strafeRight = keys.KeyD || keys.Numpad6,
+      turnLeft = keys.ArrowLeft || keys.KeyQ || keys.Numpad7,
+      turnRight = keys.ArrowRight || keys.KeyE || keys.Numpad9
+
+    if (moveBackward && !moveForward) {
+      state.y = -1
+    } else if (moveForward && !moveBackward) {
+      state.y = 1
     }
 
-    if (e.code in controls) {
-      controls[e.code] = true
+    if (strafeLeft && !strafeRight) {
+      state.x = -1
+    } else if (strafeRight && !strafeLeft) {
+      state.x = 1
     }
-  })
 
-  window.addEventListener('keyup', (e) => {
-    if (e.code in controls) {
-      controls[e.code] = false
+    if (turnLeft && !turnRight) {
+      state.rotate = 1
+    } else if (turnRight && !turnLeft) {
+      state.rotate = -1
     }
-  })
 
-  return {
-    game: () => {
-      const moveBackward = controls.ArrowDown || controls.KeyS || controls.Numpad5,
-        moveForward = controls.ArrowUp || controls.KeyW || controls.Numpad8,
-        strafeLeft = controls.KeyA || controls.Numpad4,
-        strafeRight = controls.KeyD || controls.Numpad6,
-        turnLeft = controls.ArrowLeft || controls.KeyQ || controls.Numpad7,
-        turnRight = controls.ArrowRight || controls.KeyE || controls.Numpad9
+    return state
+  },
+  ui: () => {
+    const keys = engine.input.keyboard.get(),
+      state = {}
 
-      const state = {}
+    if (keys.Backspace) {
+      state.backspace = true
+    }
 
-      let x = 0,
-        y = 0
+    if (keys.Enter || keys.NumpadEnter) {
+      state.enter = true
+    }
 
-      if (moveBackward && !moveForward) {
-        y = -1
-      } else if (moveForward && !moveBackward) {
-        y = 1
-      }
+    if (keys.Escape) {
+      state.escape = true
+    }
 
-      if (strafeLeft && !strafeRight) {
-        x = -1
-      } else if (strafeRight && !strafeLeft) {
-        x = 1
-      }
+    if (keys.Space) {
+      state.space = true
+    }
 
-      if (turnLeft && !turnRight) {
-        state.rotate = 1
-      } else if (turnRight && !turnLeft) {
-        state.rotate = -1
-      }
+    if (keys.ArrowDown || keys.KeyS || keys.Numpad5) {
+      state.down = true
+    }
 
-      if (x || y) {
-        state.translate = {
-          radius: 1,
-          theta: Math.atan2(-x, y), // NOTE: Rotated -90°
-        }
-      }
+    if (keys.ArrowLeft || keys.KeyA || keys.Numpad4) {
+      state.left = true
+    }
 
-      return state
-    },
-    reset: function () {
-      Object.keys(controls)
-        .forEach((key) => controls[key] = false)
+    if (keys.ArrowRight || keys.KeyD || keys.Numpad6) {
+      state.right = true
+    }
 
-      return this
-    },
-    ui: () => {
-      const state = {}
+    if (keys.ArrowUp || keys.KeyW || keys.Numpad8) {
+      state.up = true
+    }
 
-      if (controls.Backspace) {
-        state.backspace = true
-      }
-
-      if (controls.Delete || controls.NumpadDecimal) {
-        state.delete = true
-      }
-
-      if (controls.Enter || controls.NumpadEnter) {
-        state.enter = true
-      }
-
-      if (controls.Escape) {
-        state.escape = true
-      }
-
-      if (controls.Space) {
-        state.space = true
-      }
-
-      if (controls.ArrowDown || controls.KeyS || controls.Numpad5) {
-        state.down = true
-      }
-
-      if (controls.ArrowLeft || controls.KeyA || controls.Numpad4) {
-        state.left = true
-      }
-
-      if (controls.ArrowRight || controls.KeyD || controls.Numpad6) {
-        state.right = true
-      }
-
-      if (controls.ArrowUp || controls.KeyW || controls.Numpad8) {
-        state.up = true
-      }
-
-      return state
-    },
-  }
-})()
+    return state
+  },
+}
