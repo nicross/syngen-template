@@ -165,6 +165,5 @@ function getEngineJs() {
     'src/js/engine/props.js',
     'src/js/engine/seed.js',
     'src/js/engine/streamer.js',
-    'src/js/engine/streamer/prop.js',
   ]
 }

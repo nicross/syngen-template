@@ -12,11 +12,10 @@ engine.streamer = (() => {
       return
     }
 
-    const streamedProp = engine.streamer.prop.create(
-      registry.get(token)
-    )
+    const {options, prototype} = registry.get(token)
+    const prop = engine.props.create(prototype, options)
 
-    streamed.set(token, streamedProp)
+    streamed.set(token, prop)
   }
 
   function destroyStreamedProp(token) {
@@ -24,9 +23,9 @@ engine.streamer = (() => {
       return
     }
 
-    const streamedProp = streamed.get(token)
+    const prop = streamed.get(token)
 
-    streamedProp.destroy()
+    prop.destroy()
     streamed.delete(token)
   }
 
@@ -42,10 +41,10 @@ engine.streamer = (() => {
 
   return {
     cullProp: function (token) {
-      const streamedProp = streamed.get(token)
+      const prop = streamed.get(token)
 
-      if (streamedProp) {
-        streamedProp.cull()
+      if (prop) {
+        prop.willCull = true
       }
 
       return this
