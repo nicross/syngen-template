@@ -55,6 +55,7 @@ gulp.task('dist-electron', async () => {
     ignore: [
       '.gitignore',
       '.gitmodules',
+      'assets',
       'dist',
       'Gulpfile.js',
       'node_modules',
