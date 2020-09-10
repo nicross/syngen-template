@@ -111,22 +111,15 @@ engine.prop.base = {
   onConstruct: () => {},
   onDestroy: () => {},
   onUpdate: () => {},
-  recalculate: function (delta = 0) {
+  recalculate: function () {
     const position = engine.position.get(),
       relative = engine.utility.toRelativeCoordinates(position, this)
 
     this.atan2 = Math.atan2(this.y - position.y, this.x - position.x)
     this.distance = engine.utility.distanceRadius(position.x, position.y, this.x, this.y, this.radius)
 
-    this.binaural.update({
-      delta,
-      ...relative,
-    })
-
-    this.reverb.update({
-      delta,
-      ...relative,
-    })
+    this.binaural.update({...relative})
+    this.reverb.update({...relative})
 
     return this
   },
@@ -185,7 +178,7 @@ engine.prop.base = {
       this.y += Math.sin(this.angle) * this.velocity * delta
     }
 
-    this.recalculate(delta)
+    this.recalculate()
 
     return this
   },
