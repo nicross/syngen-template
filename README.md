@@ -2,7 +2,7 @@
 A spatial sound and synthesis framework for accessible audio game development and experience design.
 
 ## Disclaimer
-This repository is experimental and subject to change.
+This repository is experimental and under active development.
 Use at your own risk.
 
 ## Overview
@@ -74,18 +74,34 @@ More advanced applications will likely have managers that handle prop creation a
 For example, [soundStrider](https://soundstrider.shiftbacktick.io) has a `content.system.generator` service that generates the game world in chunks and registers their props with `engine.streamer` so they're only instantiated when nearby.
 The same strategy could be applied to a particle system or timed sequence.
 
+### Roadmap
+This repository is under active development.
+Future updates should include:
+
+- Adding JSDoc comments to high-level engine systems and utilities
+- Creating an `engine.utility.perlin4d` utility to generate 4D Perlin noise
+- Creating an `engine.utility.physical` decorator to grant physics to any object
+- Creating an `engine.utility.vector2d` utility to model 2D vectors and complex numbers
+- Creating an `engine.utility.vector3d` utility to model 3D vectors
+- Reworking engine systems and utilities to work in three dimensions (but default to two)
+- Reworking utilities that work with coordinates to accept object parameters
+- Aligning example projects with engine changes
+
 ### Updating syngen
-This template assumes that all code in `src/css`, `src/js/app`, and `src/js/content` is your own.
-The default files in those directories are simply a starting point for new projects.
+This repository assumes that all code in `src/css`, `src/js/app`, and `src/js/content` is your own.
+The default files in those directories simply provide a starting point for new projects.
 
 To ensure that updates can be applied in the future, please avoid making modifications to the `src/js/engine` directory.
 To update to the latest engine, simply overwrite that directory with the contents from this repository.
 Occasionally these updates may require copying changes to your `Gulpfile.js` for engine changes to be reflected.
 
 ### Example projects
-- [Audo](https://github.com/nicross/audo)
-- [Kaleidophone](https://github.com/nicross/kaleidophone)
-- [S.E.A.](https://github.com/nicross/sea)
+- [Audo](https://github.com/nicross/audo) – Endless audio racing game
+- [Kaleidophone](https://github.com/nicross/kaleidophone) – Relaxing generative audio toy
+- [S.E.A.](https://github.com/nicross/sea) – Relaxing audio watercraft simulator
+
+#### Commercial projects
+- [soundStrider](https://soundstrider.shiftbacktick.io) – Psychedelic audio exploration game
 
 ## Development
 To get started, please  use [npm](https://nodejs.org) to install the required dependencies:
