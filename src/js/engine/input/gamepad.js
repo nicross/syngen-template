@@ -50,7 +50,7 @@ engine.input.gamepad = (() => {
             state.axis[i] = 0
           }
 
-          state.axis[i] = engine.utility.clamp(state.axis[i] + value, -1, 1)
+          state.axis[i] = engine.utility.clamp(state.axis[i] + value, -1, 1) || 0
         })
 
         gamepad.buttons.forEach((button, i) => {
@@ -58,7 +58,7 @@ engine.input.gamepad = (() => {
             state.analog[i] = 0
           }
 
-          state.analog[i] = Math.min(state.analog[i] + button.value, 1)
+          state.analog[i] = Math.min(state.analog[i] + button.value, 1) || 0
           state.digital[i] |= button.pressed
         })
       }
