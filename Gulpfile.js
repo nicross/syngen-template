@@ -160,6 +160,7 @@ function getEngineJs() {
     'src/js/engine/audio/buffer/**/*.js',
     'src/js/engine/audio/**/*.js',
     'src/js/engine/loop.js',
+    'src/js/engine/input/*.js',
     'src/js/engine/performance.js',
     'src/js/engine/position.js',
     'src/js/engine/prop/base.js',

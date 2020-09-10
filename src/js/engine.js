@@ -4,6 +4,7 @@ const engine = (() => {
   })
 
   return {
+    input: {},
     prop: {},
     ready: (callback) => {
       return typeof callback == 'function'
