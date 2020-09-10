@@ -2,7 +2,7 @@ engine.prop.base = {
   name: 'base',
   construct: function ({
     angle = 0,
-    output = engine.audio.mixer.bus.props(),
+    destination = engine.audio.mixer.bus.props(),
     radius = 0,
     token,
     x = 0,
@@ -30,19 +30,17 @@ engine.prop.base = {
     this.x = x
     this.y = y
 
-    this.output = {
-      binaural: engine.audio.binaural.create(),
-      input: context.createGain(),
-      reverb: engine.audio.send.reverb.create(),
-    }
+    this.binaural = engine.audio.binaural.create()
+    this.output = context.createGain()
+    this.reverb = engine.audio.send.reverb.create()
 
-    this.output.binaural.from(this.output.input)
-    this.output.binaural.to(output)
+    this.binaural.from(this.output)
+    this.binaural.to(destination)
 
-    this.output.reverb.from(this.output.input)
+    this.reverb.from(this.output)
 
-    this.output.input.gain.value = engine.const.zeroGain
-    engine.audio.ramp.linear(this.output.input.gain, 1, engine.const.propFadeDuration)
+    this.output.gain.value = engine.const.zeroGain
+    engine.audio.ramp.linear(this.output.gain, 1, engine.const.propFadeDuration)
 
     this.recalculate()
     this.onConstruct(options)
@@ -50,12 +48,12 @@ engine.prop.base = {
     return this
   },
   destroy: function () {
-    engine.audio.ramp.linear(this.output.input.gain, engine.const.zeroGain, engine.const.propFadeDuration)
+    engine.audio.ramp.linear(this.output.gain, engine.const.zeroGain, engine.const.propFadeDuration)
 
     setTimeout(() => {
-      this.output.input.disconnect()
-      this.output.binaural.destroy()
-      this.output.reverb.destroy()
+      this.output.disconnect()
+      this.binaural.destroy()
+      this.reverb.destroy()
       this.onDestroy()
     }, engine.const.propFadeDuration * 1000)
 
@@ -120,12 +118,12 @@ engine.prop.base = {
     this.atan2 = Math.atan2(this.y - position.y, this.x - position.x)
     this.distance = engine.utility.distanceRadius(position.x, position.y, this.x, this.y, this.radius)
 
-    this.output.binaural.update({
+    this.binaural.update({
       delta,
       ...relative,
     })
 
-    this.output.reverb.update({
+    this.reverb.update({
       delta,
       ...relative,
     })

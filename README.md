@@ -49,7 +49,7 @@ content.prop.tone = engine.prop.base.invent({
       type,
     }).filtered({
       frequency: frequency * color,
-    }).connect(this.output.input)
+    }).connect(this.output)
   },
   // Called whenever destroyed (after engine.prop.base.destroy())
   onDestroy: function () {
