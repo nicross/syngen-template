@@ -17,8 +17,33 @@ engine.input.gamepad = (() => {
 
   return {
     get: () => ({...state}),
-    getAnalog: (key) => state.analog[key] || 0,
-    getAxis: (key) => state.analog[key] || 0,
+    getAnalog: function (key, invert = false) {
+      const value = state.analog[key] || 0
+
+      if (invert && value) {
+        return -1 * value
+      }
+
+      return value
+    },
+    getAxis: function (key, invert = false) {
+      const value = state.axis[key] || 0
+
+      if (invert && value) {
+        return -1 * value
+      }
+
+      return value
+    },
+    hasAxis: function (...keys) {
+      for (const key of keys) {
+        if (!(key in state.axis)) {
+          return false
+        }
+      }
+
+      return true
+    },
     isDigital: (key) => Boolean(state.digital[key]),
     reset: function () {
       state = {
