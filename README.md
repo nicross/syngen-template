@@ -32,6 +32,9 @@ These files can then be shared on platforms like [itch.io](https://itch.io).
 This example shows how to define a prop with configurable options and instantiate one in the scene:
 
 ```js
+// Start the audio engine (e.g. after first user gesture)
+engine.audio.start()
+
 // Invent the prop, inherits from engine.prop.base
 content.prop.tone = engine.prop.base.invent({
   name: 'tone',
