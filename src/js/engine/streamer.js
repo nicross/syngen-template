@@ -5,7 +5,10 @@ engine.streamer = (() => {
 
   let currentX,
     currentY,
-    shouldForce = false
+    limit = Infinity,
+    radius = engine.const.speedOfSound,
+    shouldForce = false,
+    sort = (a, b) => a.distance - b.distance
 
   function createRegisteredProp(token) {
     if (!registry.has(token)) {
@@ -39,6 +42,33 @@ engine.streamer = (() => {
     return token
   }
 
+  function getStreamableProps(x, y) {
+    const props = [
+      // Select nearby registered props and coerce into instances of prototype
+      // so it's easier to sort and limit them (e.g. check prototype or options)
+      // (the faux flag should help indicate that it's not spawned)
+      ...registryTree.retrieve({
+        height: radius * 2,
+        width: radius * 2,
+        x: x - radius,
+        y: y - radius,
+      }).filter(({token}) => !streamed.has(token)).map((registeredProp) => Object.setPrototypeOf({
+        ...registeredProp.options,
+        distance: engine.utility.distance(x, y, registeredProp.x, registeredProp.y),
+        faux: true,
+      }, registeredProp.prototype)),
+
+      // Currently streamed props
+      ...streamed.values(),
+    ].filter((prop) => prop.distance <= radius)
+
+    if (!isFinite(limit)) {
+      return props
+    }
+
+    return props.sort(sort).slice(0, limit)
+  }
+
   return {
     cullProp: function (token) {
       const prop = streamed.get(token)
@@ -65,6 +95,8 @@ engine.streamer = (() => {
       destroyStreamedProp(token)
       return this
     },
+    getLimit: () => limit,
+    getRadius: () => radius,
     getRegisteredProp: (token) => registry.get(token),
     getRegisteredProps: () => registry.values(),
     getStreamedProp: (token) => streamed.get(token),
@@ -105,32 +137,38 @@ engine.streamer = (() => {
 
       return this
     },
+    setLimit: function (value) {
+      if (value > 0) {
+        limit = Number(value) || Infinity
+        shouldForce = true
+      }
+      return this
+    },
+    setRadius: function (value) {
+      radius = Number(value) || 0
+      shouldForce = true
+      return this
+    },
+    setSort: function (value) {
+      if (typeof sort == 'function') {
+        sort = value
+        shouldForce = true
+      }
+      return this
+    },
     update: (force = false) => {
-      const position = engine.position.get(),
-        radius = engine.const.streamerRadius
+      const {x, y} = engine.position.get()
 
-      if (!force && !shouldForce && currentX === position.x && currentY === position.y) {
+      if (!force && !shouldForce && currentX === x && currentY === y) {
         return this
       }
 
-      currentX = position.x
-      currentY = position.y
+      currentX = x
+      currentY = y
       shouldForce = false
 
-      const nowStreaming = new Set()
-
-      const streamable = [
-        ...registryTree.retrieve({
-          height: radius * 2,
-          width: radius * 2,
-          x: currentX - radius,
-          y: currentY - radius,
-        }).map((registeredProp) => ({
-          ...registeredProp,
-          distance: engine.utility.distance(position.x, position.y, registeredProp.x, registeredProp.y),
-        })),
-        ...Array.from(streamed.values()),
-      ].filter((prop) => prop.distance <= radius)
+      const nowStreaming = new Set(),
+        streamable = getStreamableProps(x, y)
 
       for (const {token} of streamable) {
         if (!streamed.has(token)) {
