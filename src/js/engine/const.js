@@ -5,7 +5,7 @@ engine.const = {
   binauralShadowOffset: Math.PI / 4, // radian offset of each ear from +/- 90 deg
   binauralShadowRolloff: 1, // m
   distancePower: 2, // 1 / (d ** distancePower)
-  distancePowerHorizon: false, // Whether to dropoff power calculations as a ratio of streamerRadius
+  distancePowerHorizon: false, // Whether to dropoff power calculations as a ratio of streamer radius
   distancePowerHorizonExponent: 0, // Speed of the distance dropoff
   gravity: 9.8, // m/s
   idleDelta: 1/60, // s
@@ -18,7 +18,6 @@ engine.const = {
   propFadeDuration: 0.005, // s
   seedSeparator: '~', // separator for arrays used as engine.utility.srand() seeds
   speedOfSound: 343, // m/s
-  streamerRadius: 343, // m
   subFrequency: 60, // Hz
   tau: Math.PI * 2, // circle constant
   unit: 1, // 1D line segment

@@ -146,7 +146,7 @@ engine.utility.distanceToPower = (distance) => {
 
   if (engine.const.distancePowerHorizon) {
     // XXX: One is added because of above
-    const distancePowerHorizon = engine.const.streamerRadius + 1
+    const distancePowerHorizon = engine.streamer.getRadius() + 1
     horizonPower = Math.max(0, distancePowerHorizon - distance) / distancePowerHorizon
     horizonPower **= engine.const.distancePowerHorizonExponent
   }

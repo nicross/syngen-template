@@ -57,9 +57,13 @@ engine.audio.send.reverb.prototype = {
       return this
     }
 
+    // TODO: Consider a distance model that doesn't rely on engine.streamer.getRadius()
+    // e.g. a constant ratio that forces users to turn reverb send way down
+    // BUT what's nice about this solution is close sounds are present and further are roomy
+
     const distance = engine.utility.distanceOrigin(this.x, this.y),
       distancePower = engine.utility.distanceToPower(distance),
-      distanceRatio = 0.5 + (engine.utility.clamp(distance / engine.const.streamerRadius, 0, 1) * 0.5)
+      distanceRatio = 0.5 + (engine.utility.clamp(distance / engine.streamer.getRadius(), 0, 1) * 0.5)
 
     const delayTime = engine.utility.clamp(distance / engine.const.speedOfSound, engine.const.zeroTime, 1),
       inputGain = engine.utility.clamp(distancePower * distanceRatio, engine.const.zeroGain, 1)
