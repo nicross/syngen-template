@@ -1,7 +1,6 @@
 engine.position = (() => {
   const defaults = {
     angle: 0,
-    delta: 0,
     x: 0,
     y: 0,
   }
@@ -27,13 +26,9 @@ engine.position = (() => {
 
       return this
     },
-    turn: function (amount = 0) {
-      state.angle = engine.utility.normalizeAngle(state.angle + amount)
-      return this
-    },
   }
 })()
 
 engine.state.on('export', (data = {}) => data.position = engine.position.get())
 engine.state.on('import', (data = {}) => engine.position.set(data.position))
-engine.state.on('reset', () => engine.position.set())
+engine.state.on('reset', () => engine.position.reset())
