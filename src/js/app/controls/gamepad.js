@@ -9,7 +9,7 @@ app.controls.gamepad = {
     }
 
     return {
-      rotate: 0,
+      rotate: engine.input.gamepad.getAxis(0),
       x: 0,
       y: engine.input.gamepad.getAxis(1, true),
     }
