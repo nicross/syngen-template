@@ -9,11 +9,11 @@ engine.input.keyboard = (() => {
       return
     }
 
-    state[e.which] = true
+    state[e.code] = true
   }
 
   function onKeyup(e) {
-    state[e.which] = false
+    state[e.code] = false
   }
 
   return {
