@@ -1,7 +1,7 @@
 engine.utility.pubsub = {}
 
 engine.utility.pubsub.create = function (...args) {
-  return Object.create(this.prototype).create(...args)
+  return Object.create(this.prototype).construct(...args)
 }
 
 engine.utility.pubsub.decorate = function (target, instance) {
@@ -26,7 +26,7 @@ engine.utility.pubsub.is = function (x) {
 }
 
 engine.utility.pubsub.prototype = {
-  create: function() {
+  construct: function() {
     this._handler = {}
     return this
   },
