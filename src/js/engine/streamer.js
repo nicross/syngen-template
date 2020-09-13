@@ -46,7 +46,7 @@ engine.streamer = (() => {
     const props = [
       // Select nearby registered props and coerce into instances of prototype
       // so it's easier to sort and limit them (e.g. check prototype or options)
-      // (the faux flag should help indicate that it's not spawned)
+      // (the instantiated flag should indicate whether spawned)
       ...registryTree.retrieve({
         height: radius * 2,
         width: radius * 2,
@@ -55,7 +55,6 @@ engine.streamer = (() => {
       }).filter(({token}) => !streamed.has(token)).map((registeredProp) => Object.setPrototypeOf({
         ...registeredProp.options,
         distance: engine.utility.distance(x, y, registeredProp.x, registeredProp.y),
-        faux: true,
       }, registeredProp.prototype)),
 
       // Currently streamed props

@@ -16,6 +16,7 @@ engine.prop.base = {
     this.accelerationDelta = 0
     this.angle = angle
     this.angleDelta = 0
+    this.instantiated = true
     this.jerk = 0
     this.jerkDelta = 0
     this.periodic = {}
