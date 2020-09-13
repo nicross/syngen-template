@@ -7,6 +7,7 @@ engine.prop.base = {
     token,
     x = 0,
     y = 0,
+    z = 0,
     ...options
   } = {}) {
     const context = engine.audio.context()
@@ -23,12 +24,14 @@ engine.prop.base = {
     this.spawnAngle = this.angle
     this.spawnX = x
     this.spawnY = y
+    this.spawnZ = z
     this.token = token
     this.velocity = 0
     this.velocityDelta = 0
     this.willCull = false
     this.x = x
     this.y = y
+    this.z = z
 
     this.binaural = engine.audio.binaural.create()
     this.output = context.createGain()
