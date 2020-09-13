@@ -3,6 +3,7 @@ engine.position = (() => {
     angle: 0,
     x: 0,
     y: 0,
+    z: 0,
   }
 
   let state = {...defaults}
@@ -10,10 +11,12 @@ engine.position = (() => {
   return {
     get: () => ({...state}),
     rect: () => ({
+      depth: engine.const.positionRadius * 2,
       height: engine.const.positionRadius * 2,
       width: engine.const.positionRadius * 2,
       x: state.x - engine.const.positionRadius,
       y: state.y - engine.const.positionRadius,
+      z: state.z - engine.const.positionRadius,
     }),
     reset: function () {
       return this.set()
@@ -26,6 +29,7 @@ engine.position = (() => {
 
       return this
     },
+    vector: () => engine.utility.vector3d.create(state),
   }
 })()
 

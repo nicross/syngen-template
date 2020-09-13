@@ -1,10 +1,9 @@
 engine.streamer = (() => {
   const registry = new Map(),
-    registryTree = engine.utility.quadtree.create(),
+    registryTree = engine.utility.octree.create(),
     streamed = new Map()
 
-  let currentX,
-    currentY,
+  let current = engine.utility.vector3d.create(),
     limit = Infinity,
     radius = engine.const.speedOfSound,
     shouldForce = false,
@@ -42,19 +41,21 @@ engine.streamer = (() => {
     return token
   }
 
-  function getStreamableProps(x, y) {
+  function getStreamableProps() {
     const props = [
       // Select nearby registered props and coerce into instances of prototype
       // so it's easier to sort and limit them (e.g. check prototype or options)
       // (the instantiated flag should indicate whether spawned)
       ...registryTree.retrieve({
+        depth: radius * 2,
         height: radius * 2,
         width: radius * 2,
-        x: x - radius,
-        y: y - radius,
+        x: current.x - radius,
+        y: current.y - radius,
+        z: current.z - radius,
       }).filter(({token}) => !streamed.has(token)).map((registeredProp) => Object.setPrototypeOf({
         ...registeredProp.options,
-        distance: engine.utility.distance(x, y, registeredProp.x, registeredProp.y),
+        distance: current.distance(registeredProp),
       }, registeredProp.prototype)),
 
       // Currently streamed props
@@ -114,6 +115,7 @@ engine.streamer = (() => {
         token,
         x: options.x,
         y: options.y,
+        z: options.z,
       }
 
       registry.set(token, registeredProp)
@@ -156,18 +158,17 @@ engine.streamer = (() => {
       return this
     },
     update: (force = false) => {
-      const {x, y} = engine.position.get()
+      const position = engine.position.vector()
 
-      if (!force && !shouldForce && currentX === x && currentY === y) {
+      if (!force && !shouldForce && current.equals(position)) {
         return this
       }
 
-      currentX = x
-      currentY = y
+      current = position
       shouldForce = false
 
       const nowStreaming = new Set(),
-        streamable = getStreamableProps(x, y)
+        streamable = getStreamableProps()
 
       for (const {token} of streamable) {
         if (!streamed.has(token)) {
