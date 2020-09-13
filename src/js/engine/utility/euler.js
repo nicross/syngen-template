@@ -4,8 +4,6 @@ engine.utility.euler.create = function (...args) {
   return Object.create(this.prototype).construct(...args)
 }
 
-// TODO: Quaternions, vector3d methods
-
 engine.utility.euler.prototype = {
   add: function ({
     pitch = 0,

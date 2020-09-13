@@ -84,8 +84,6 @@ Future updates should include:
 - Adding JSDoc comments to high-level engine systems and utilities
 - Creating an `engine.utility.perlin4d` utility to generate 4D Perlin noise
 - Creating an `engine.utility.physical` decorator to grant physics to any object
-- Creating an `engine.utility.vector2d` utility to model 2D vectors and complex numbers
-- Creating an `engine.utility.vector3d` utility to model 3D vectors
 - Reworking engine systems and utilities to work in three dimensions (but default to two)
 - Reworking utilities that work with coordinates to accept object parameters
 - Aligning example projects with engine changes

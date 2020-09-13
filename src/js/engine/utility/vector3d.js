@@ -84,6 +84,24 @@ engine.utility.vector3d.prototype = {
   normalize: function () {
     return this.divide(this.distance())
   },
+  rotateEuler: function (euler, sequence) {
+    return this.rotateQuaternion(
+      engine.utility.quaternion.fromEuler(euler, sequence)
+    )
+  },
+  rotateQuaternion: function (quaternion) {
+    if (!engine.utility.quaternion.prototype.isPrototypeOf(quaternion)) {
+      quaternion = engine.utility.quaternion.create(quaternion)
+    }
+
+    return engine.utility.vector3d.create(
+      quaternion.multiply(
+        engine.utility.quaternion.create(this)
+      ).multiply(
+        quaternion.inverse()
+      )
+    )
+  },
   subtract: function ({
     x = 0,
     y = 0,

@@ -4,6 +4,70 @@ engine.utility.quaternion.create = function (...args) {
   return Object.create(this.prototype).construct(...args)
 }
 
+engine.utility.quaternion.fromEuler = function ({
+  pitch = 0,
+  roll = 0,
+  yaw = 0,
+} = {}, sequence = 'ZXY') {
+  sequence = sequence.toUpperCase()
+
+  const x = roll / 2,
+    y = pitch / 2,
+    z = yaw / 2
+
+  const cx = Math.cos(x),
+    cy = Math.cos(y),
+    cz = Math.cos(z),
+    sx = Math.sin(x),
+    sy = Math.sin(y),
+    sz = Math.sin(z)
+
+  switch (sequence) {
+    case 'XYZ':
+      return this.create({
+        w: (cx * cy * cz) - (sx * sy * sz),
+        x: (sx * cy * cz) + (cx * sy * sz),
+        y: (cx * sy * cz) - (sx * cy * sz),
+        z: (cx * cy * sz) + (sx * sy * cz),
+      })
+    case 'XZY':
+      return this.create({
+        w: (cx * cy * cz) + (sx * sy * sz),
+        x: (sx * cy * cz) - (cx * sy * sz),
+        y: (cx * sy * cz) - (sx * cy * sz),
+        z: (cx * cy * sz) + (sx * sy * cz),
+      })
+    case 'YXZ':
+      return this.create({
+        w: (cx * cy * cz) + (sx * sy * sz),
+        x: (sx * cy * cz) + (cx * sy * sz),
+        y: (cx * sy * cz) - (sx * cy * sz),
+        z: (cx * cy * sz) - (sx * sy * cz),
+      })
+    case 'YZX':
+      return this.create({
+        w: (cx * cy * cz) - (sx * sy * sz),
+        x: (sx * cy * cz) + (cx * sy * sz),
+        y: (cx * sy * cz) + (sx * cy * sz),
+        z: (cx * cy * sz) - (sx * sy * cz),
+      })
+    case 'ZXY':
+      return this.create({
+        w: (cx * cy * cz) - (sx * sy * sz),
+        x: (sx * cy * cz) - (cx * sy * sz),
+        y: (cx * sy * cz) + (sx * cy * sz),
+        z: (cx * cy * sz) + (sx * sy * cz),
+      })
+    case 'ZYX':
+      return this.create({
+        w: (cx * cy * cz) + (sx * sy * sz),
+        x: (sx * cy * cz) - (cx * sy * sz),
+        y: (cx * sy * cz) + (sx * cy * sz),
+        z: (cx * cy * sz) - (sx * sy * cz),
+      })
+  }
+}
+
 engine.utility.quaternion.prototype = {
   add: function ({
     w = 0,
