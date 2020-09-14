@@ -42,7 +42,6 @@ engine.utility.vector3d.prototype = {
     y = 0,
     z = 0,
   } = {}) {
-    // TODO: return engine.utility.distance(this, {x, y, z})
     return Math.sqrt(((this.x - x) ** 2) + ((this.y - y) ** 2) + ((this.z - z) ** 2))
   },
   distance2: function ({
@@ -50,7 +49,6 @@ engine.utility.vector3d.prototype = {
     y = 0,
     z = 0,
   } = {}) {
-    // TODO: return engine.utility.distance2(this, {x, y, z})
     return ((this.x - x) ** 2) + ((this.y - y) ** 2) + ((this.z - z) ** 2)
   },
   divide: function (scalar = 0) {
@@ -66,6 +64,26 @@ engine.utility.vector3d.prototype = {
     z = 0,
   } = {}) {
     return (this.x * x) + (this.y * y) + (this.z * z)
+  },
+  euler: function () {
+    return engine.utility.euler.create({
+      pitch: this.z ? Math.atan2(this.z, Math.sqrt((this.x ** 2) + (this.y ** 2))) : 0,
+      roll: 0,
+      yaw: Math.atan2(this.y, this.x),
+    })
+  },
+  eulerTo: function (vector, euler = undefined) {
+    let relative = engine.utility.vector3d.prototype.isPrototypeOf(vector)
+      ? vector
+      : engine.utility.vector3d.create(vector)
+
+    relative = relative.subtract(this)
+
+    if (euler) {
+      relative = relative.rotateEuler(euler)
+    }
+
+    return relative.euler()
   },
   equals: function ({
     x = 0,
@@ -115,7 +133,6 @@ engine.utility.vector3d.prototype = {
   },
   subtractRadius: function (radius = 0) {
     if (radius <= 0) {
-      console.log('copy')
       return engine.utility.vector3d.create(this)
     }
 

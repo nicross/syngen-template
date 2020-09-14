@@ -17,6 +17,19 @@ engine.utility.vector2d.prototype = {
   angle: function () {
     return Math.atan2(this.y, this.x)
   },
+  angleTo: function (vector, angle = 0) {
+    let relative = engine.utility.vector2d.prototype.isPrototypeOf(vector)
+      ? vector
+      : engine.utility.vector2d.create(vector)
+
+    relative = relative.subtract(this)
+
+    if (angle) {
+      relative = relative.rotate(angle)
+    }
+
+    return relative.angle()
+  },
   construct: function ({
     x = 0,
     y = 0,
@@ -35,14 +48,12 @@ engine.utility.vector2d.prototype = {
     x = 0,
     y = 0,
   } = {}) {
-    // TODO: return engine.utility.distance(this, {x, y})
     return Math.sqrt(((this.x - x) ** 2) + ((this.y - y) ** 2))
   },
   distance2: function ({
     x = 0,
     y = 0,
   } = {}) {
-    // TODO: return engine.utility.distance2(this, {x, y})
     return ((this.x - x) ** 2) + ((this.y - y) ** 2)
   },
   divide: function (scalar = 0) {
@@ -73,9 +84,12 @@ engine.utility.vector2d.prototype = {
     return this.divide(this.distance())
   },
   rotate: function (angle = 0) {
+    const cos = Math.cos(angle),
+      sin = Math.sin(angle)
+
     return engine.utility.vector2d.create({
-      x: this.x * Math.cos(angle),
-      y: this.y * Math.sin(angle),
+      x: (this.x * cos) - (this.y * sin),
+      y: (this.y * cos) + (this.x * sin),
     })
   },
   subtract: function ({

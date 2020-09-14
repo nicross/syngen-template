@@ -5,17 +5,6 @@ engine.utility.euler.create = function (...args) {
 }
 
 engine.utility.euler.prototype = {
-  add: function ({
-    pitch = 0,
-    roll = 0,
-    yaw = 0,
-  } = {}) {
-    return engine.utility.euler.create({
-      pitch: this.pitch + pitch,
-      roll: this.roll + roll,
-      yaw: this.yaw + yaw,
-    })
-  },
   construct: function ({
     pitch = 0,
     roll = 0,
@@ -26,29 +15,11 @@ engine.utility.euler.prototype = {
     this.yaw = yaw
     return this
   },
-  divide: function (scalar = 0) {
-    return engine.utility.euler.create({
-      pitch: this.pitch / scalar,
-      roll: this.roll / scalar,
-      yaw: this.yaw / scalar,
-    })
-  },
-  multiply: function (scalar = 0) {
+  scale: function (scalar = 0) {
     return engine.utility.euler.create({
       pitch: this.pitch * scalar,
       roll: this.roll * scalar,
       yaw: this.yaw * scalar,
-    })
-  },
-  subtract: function ({
-    pitch = 0,
-    roll = 0,
-    yaw = 0,
-  } = {}) {
-    return engine.utility.euler.create({
-      pitch: this.pitch - pitch,
-      roll: this.roll - roll,
-      yaw: this.yaw - yaw,
     })
   },
 }
