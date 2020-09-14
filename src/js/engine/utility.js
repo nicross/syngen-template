@@ -2,26 +2,26 @@ engine.utility.addInterval = (frequency, interval) => frequency * (2 ** interval
 
 engine.utility.between = (value, min, max) => value >= min && value <= max
 
-engine.utility.centroid = (points = []) => {
+engine.utility.centroid = (vectors = []) => {
   // NOTE: Returns origin if empty set
-  if (!points.length) {
-    return {
-      x: 0,
-      y: 0,
-    }
+  if (!vectors.length) {
+    return engine.utility.vector3d.create()
   }
 
   let xSum = 0,
-    ySum = 0
+    ySum = 0,
+    zSum = 0
 
-  for (const point of points) {
-    xSum += point.x
-    ySum += point.y
+  for (const vector of vectors) {
+    xSum += vector.x || 0
+    ySum += vector.y || 0
+    zSum += vector.z || 0
   }
 
   return {
-    x: xSum / points.length,
-    y: ySum / points.length,
+    x: xSum / vectors.length,
+    y: ySum / vectors.length,
+    z: zSum / vectors.length,
   }
 }
 
