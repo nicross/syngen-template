@@ -129,8 +129,8 @@ engine.prop.base = {
 
     this.distance = this.relative.distance()
 
-    this.binaural.update(this.relative)
-    this.reverb.update(this.relative)
+    this.binaural.update({...this.relative})
+    this.reverb.update({...this.relative})
 
     return this
   },
