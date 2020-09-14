@@ -110,8 +110,22 @@ engine.utility.vector3d.prototype = {
     return engine.utility.vector3d.create({
       x: this.x - x,
       y: this.y - y,
-      y: this.z - z,
+      z: this.z - z,
     })
+  },
+  subtractRadius: function (radius = 0) {
+    if (radius <= 0) {
+      console.log('copy')
+      return engine.utility.vector3d.create(this)
+    }
+
+    const distance = this.distance()
+
+    if (radius >= distance) {
+      return engine.utility.vector3d.create()
+    }
+
+    return this.multiply(1 - (radius / distance))
   },
 }
 

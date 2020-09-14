@@ -87,6 +87,19 @@ engine.utility.vector2d.prototype = {
       y: this.y - y,
     })
   },
+  subtractRadius: function (radius = 0) {
+    if (radius <= 0) {
+      return engine.utility.vector2d.create(this)
+    }
+
+    const distance = this.distance()
+
+    if (radius >= distance) {
+      return engine.utility.vector2d.create()
+    }
+
+    return this.multiply(1 - (radius / distance))
+  },
 }
 
 engine.utility.vector2d.unitX = function () {
