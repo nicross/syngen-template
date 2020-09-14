@@ -8,7 +8,7 @@ engine.utility.quaternion.fromEuler = function ({
   pitch = 0,
   roll = 0,
   yaw = 0,
-} = {}, sequence = 'ZXY') {
+} = {}, sequence = engine.const.eulerToQuaternion) {
   sequence = sequence.toUpperCase()
 
   const x = roll / 2,

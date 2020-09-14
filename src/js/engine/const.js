@@ -7,6 +7,7 @@ engine.const = {
   distancePower: 2, // 1 / (d ** distancePower)
   distancePowerHorizon: false, // Whether to dropoff power calculations as a ratio of streamer radius
   distancePowerHorizonExponent: 0, // Speed of the distance dropoff
+  eulerToQuaternion: 'ZYX', // One of eight supported tuples, see engine.utility.quaternion
   gravity: 9.8, // m/s
   idleDelta: 1/60, // s
   maxFrequency: 20000, // Hz
