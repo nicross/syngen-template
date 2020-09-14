@@ -22,4 +22,14 @@ engine.utility.euler.prototype = {
       yaw: this.yaw * scalar,
     })
   },
+  set: function ({
+    pitch = 0,
+    roll = 0,
+    yaw = 0,
+  } = {}) {
+    this.pitch = pitch
+    this.roll = roll
+    this.yaw = yaw
+    return this
+  },
 }

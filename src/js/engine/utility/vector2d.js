@@ -92,6 +92,14 @@ engine.utility.vector2d.prototype = {
       y: (this.y * cos) + (this.x * sin),
     })
   },
+  set: function ({
+    x = 0,
+    y = 0,
+  } = {}) {
+    this.x = x
+    this.y = y
+    return this
+  },
   subtract: function ({
     x = 0,
     y = 0,

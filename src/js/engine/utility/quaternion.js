@@ -160,6 +160,18 @@ engine.utility.quaternion.prototype = {
       z: this.z * scalar,
     })
   },
+  set: function ({
+    w = 0,
+    x = 0,
+    y = 0,
+    z = 0,
+  } = {}) {
+    this.w = w
+    this.x = x
+    this.y = y
+    this.z = z
+    return this
+  },
   subtract: function ({
     w = 0,
     x = 0,

@@ -120,6 +120,16 @@ engine.utility.vector3d.prototype = {
       )
     )
   },
+  set: function ({
+    x = 0,
+    y = 0,
+    z = 0,
+  } = {}) {
+    this.x = x
+    this.y = y
+    this.z = z
+    return this
+  },
   subtract: function ({
     x = 0,
     y = 0,
