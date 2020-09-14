@@ -124,7 +124,17 @@ engine.utility.degreesToRadians = (degrees) => degrees * Math.PI / 180
 
 engine.utility.detune = (f, cents = 0) => f * (2 ** (cents / 1200))
 
-engine.utility.distance = (x1, y1, x2, y2) => Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
+engine.utility.distance = (a, b) => Math.sqrt(engine.utility.distance2(a, b))
+
+engine.utility.distance2 = ({
+  x: x1 = 0,
+  y: y1 = 0,
+  z: z1 = 0,
+} = {}, {
+  x: x2 = 0,
+  y: y2 = 0,
+  z: z2 = 0,
+} = {}) => ((x2 - x1) ** 2) + ((y2 - y1) ** 2) + ((z2 - z1) ** 2)
 
 engine.utility.distanceToPower = (distance) => {
   // XXX: One is added so all distances yield sensible values
