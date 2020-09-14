@@ -126,17 +126,6 @@ engine.utility.detune = (f, cents = 0) => f * (2 ** (cents / 1200))
 
 engine.utility.distance = (x1, y1, x2, y2) => Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
 
-engine.utility.distanceOrigin = (x, y) => Math.sqrt(x ** 2 + y ** 2)
-
-engine.utility.distanceRadius = (x1, y1, x2, y2, radius = 0) => {
-  return Math.max(0, engine.utility.distance(x1, y1, x2, y2) - radius)
-}
-
-engine.utility.distanceTheta = (x1, y1, x2, y2, theta) => {
-  // Is (x1, y1) ahead (positive) or behind (negative) of (x2, y2) facing theta?
-  return engine.utility.rotatePoint(x1 - x2, y1 - y2, theta).x
-}
-
 engine.utility.distanceToPower = (distance) => {
   // XXX: One is added so all distances yield sensible values
   distance = Math.max(1, distance + 1)
