@@ -32,14 +32,7 @@ engine.props = (() => {
       return this
     },
     update: function ({delta, paused}) {
-      const options = {
-        delta,
-        paused,
-        position: engine.position.get(),
-      }
-
-      pool.forEach((prop) => prop.update(options))
-
+      pool.forEach((prop) => prop.update({delta, paused}))
       return this
     },
   }

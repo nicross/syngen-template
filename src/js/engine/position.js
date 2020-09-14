@@ -1,14 +1,17 @@
 engine.position = (() => {
   const defaults = {
-    angle: 0,
+    pitch: 0,
+    roll: 0,
     x: 0,
     y: 0,
+    yaw: 0,
     z: 0,
   }
 
   let state = {...defaults}
 
   return {
+    euler: engine.utility.euler.create(state),
     get: () => ({...state}),
     rect: () => ({
       depth: engine.const.positionRadius * 2,
@@ -18,6 +21,7 @@ engine.position = (() => {
       y: state.y - engine.const.positionRadius,
       z: state.z - engine.const.positionRadius,
     }),
+    quaternion: (sequence) => engine.utility.quaternion.fromEuler(state, sequence),
     reset: function () {
       return this.set()
     },

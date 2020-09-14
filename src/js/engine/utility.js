@@ -197,11 +197,6 @@ engine.utility.intersects = (a, b) => {
   return xOverlap && yOverlap
 }
 
-engine.utility.isWithinRadius = (point = {}, radius = 0) => {
-  const {x: dx, y: dy} = engine.utility.subtractRadius(point, radius)
-  return dx == 0 && dy == 0
-}
-
 engine.utility.lerp = (min, max, value) => (min * (1 - value)) + (max * value)
 
 engine.utility.lerpExp = (min, max, value, power = 2) => {
@@ -315,57 +310,9 @@ engine.utility.shuffle = (array, random = Math.random) => {
 
 engine.utility.sign = (value) => value >= 0 ? 1 : -1
 
-engine.utility.subtractRadius = ({x = 0, y = 0} = {}, radius = 0) => {
-  // SEE: https://math.stackexchange.com/a/1630886
-  if (radius == 0) {
-    return {
-      x,
-      y,
-    }
-  }
-
-  const d = Math.sqrt(x ** 2 + y ** 2)
-
-  if (d <= radius) {
-    return {
-      x: 0,
-      y: 0,
-    }
-  }
-
-  const t = 1 - (radius / d)
-
-  return {
-    x: t * x,
-    y: t * y,
-  }
-}
-
 engine.utility.toCents = (f1, f2) => (f2 - f1) / f1 * 1200
 
 engine.utility.toDb = (value) => 10 * Math.log10(value)
-
-engine.utility.toRelativeCoordinates = (
-  {
-    angle = 0,
-    x: positionX = 0,
-    y: positionY = 0,
-  } = {},
-  {
-    radius = 0,
-    x: objectX = 0,
-    y: objectY = 0,
-  } = {}
-) => {
-  return engine.utility.subtractRadius(
-    engine.utility.rotatePoint(
-      objectX - positionX,
-      objectY - positionY,
-      angle
-    ),
-    radius
-  )
-}
 
 engine.utility.toSubFrequency = (frequency, sub = engine.const.subFrequency) => {
   while (frequency > sub) {

@@ -116,14 +116,21 @@ engine.prop.base = {
   onDestroy: () => {},
   onUpdate: () => {},
   recalculate: function () {
-    const position = engine.position.get(),
-      relative = engine.utility.toRelativeCoordinates(position, this)
+    const position = engine.position.get()
 
-    this.atan2 = Math.atan2(this.y - position.y, this.x - position.x)
-    this.distance = engine.utility.distanceRadius(position.x, position.y, this.x, this.y, this.radius)
+    this.relative = engine.utility.vector3d.create(this)
+      .subtract(position)
+      .subtractRadius(this.radius)
+      .rotateEuler({
+        pitch: -position.pitch,
+        roll: -position.roll,
+        yaw: -position.yaw,
+      })
 
-    this.binaural.update({...relative})
-    this.reverb.update({...relative})
+    this.distance = this.relative.distance()
+
+    this.binaural.update(this.relative)
+    this.reverb.update(this.relative)
 
     return this
   },
