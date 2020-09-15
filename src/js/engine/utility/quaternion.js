@@ -141,7 +141,13 @@ engine.utility.quaternion.prototype = {
     return engine.utility.vector3d.unitX().rotateQuaternion(this)
   },
   inverse: function () {
-    return this.conjugate().scale(1 / this.distance2())
+    const scalar = 1 / this.distance2()
+
+    if (!isFinite(scalar)) {
+      return this.conjugate()
+    }
+
+    return this.conjugate().scale(scalar)
   },
   isZero: function () {
     return !this.w && !this.x && !this.y && !this.z

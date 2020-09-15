@@ -104,6 +104,10 @@ engine.utility.vector3d.prototype = {
       quaternion = engine.utility.quaternion.create(quaternion)
     }
 
+    if (quaternion.isZero()) {
+      return this.clone()
+    }
+
     return engine.utility.vector3d.create(
       quaternion.multiply(
         engine.utility.quaternion.create(this)
