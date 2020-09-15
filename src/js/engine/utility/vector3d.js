@@ -16,6 +16,9 @@ engine.utility.vector3d.prototype = {
       z: this.z + z,
     })
   },
+  clone: function () {
+    return engine.utility.vector3d.create(this)
+  },
   construct: function ({
     x = 0,
     y = 0,

@@ -63,6 +63,9 @@ engine.utility.euler.fromQuaternion = function ({
 }
 
 engine.utility.euler.prototype = {
+  clone: function () {
+    return engine.utility.euler.create(this)
+  },
   construct: function ({
     pitch = 0,
     roll = 0,

@@ -30,6 +30,9 @@ engine.utility.vector2d.prototype = {
 
     return relative.angle()
   },
+  clone: function () {
+    return engine.utility.vector2d.create(this)
+  },
   construct: function ({
     x = 0,
     y = 0,

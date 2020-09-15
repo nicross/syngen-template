@@ -83,6 +83,9 @@ engine.utility.quaternion.prototype = {
       z: this.z + z,
     })
   },
+  clone: function () {
+    return engine.utility.quaternion.create(this)
+  },
   conjugate: function () {
     return engine.utility.quaternion.create({
       w: this.w,
