@@ -104,18 +104,15 @@ engine.prop.base = {
   onDestroy: () => {},
   onUpdate: () => {},
   recalculate: function () {
-    const position = engine.position.get()
+    const positionQuaternion = engine.position.getQuaternion(),
+      positionVector = engine.position.getVector()
 
     this.updatePhysics()
 
     this.relative = this.vector()
-      .subtract(position)
+      .subtract(positionVector)
       .subtractRadius(this.radius)
-      .rotateEuler({
-        pitch: -position.pitch,
-        roll: -position.roll,
-        yaw: -position.yaw,
-      })
+      .rotateQuaternion(positionQuaternion.conjugate())
 
     this.distance = this.relative.distance()
 

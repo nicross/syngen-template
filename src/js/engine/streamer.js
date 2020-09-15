@@ -3,7 +3,7 @@ engine.streamer = (() => {
     registryTree = engine.utility.octree.create(),
     streamed = new Map()
 
-  let current = engine.utility.vector3d.create(),
+  let currentVector = engine.utility.vector3d.create(),
     limit = Infinity,
     radius = engine.const.speedOfSound,
     shouldForce = false,
@@ -50,12 +50,12 @@ engine.streamer = (() => {
         depth: radius * 2,
         height: radius * 2,
         width: radius * 2,
-        x: current.x - radius,
-        y: current.y - radius,
-        z: current.z - radius,
+        x: currentVector.x - radius,
+        y: currentVector.y - radius,
+        z: currentVector.z - radius,
       }).filter(({token}) => !streamed.has(token)).map((registeredProp) => Object.setPrototypeOf({
         ...registeredProp.options,
-        distance: current.distance(registeredProp),
+        distance: currentVector.distance(registeredProp),
       }, registeredProp.prototype)),
 
       // Currently streamed props
@@ -132,8 +132,6 @@ engine.streamer = (() => {
       streamed.forEach((streamedProp) => streamedProp.destroy())
       streamed.clear()
 
-      currentX = null
-      currentY = null
       shouldForce = false
 
       return this
@@ -158,13 +156,13 @@ engine.streamer = (() => {
       return this
     },
     update: (force = false) => {
-      const position = engine.position.vector()
+      const positionVector = engine.position.getVector()
 
-      if (!force && !shouldForce && current.equals(position)) {
+      if (!force && !shouldForce && currentVector.equals(positionVector)) {
         return this
       }
 
-      current = position
+      currentVector = positionVector
       shouldForce = false
 
       const nowStreaming = new Set(),
