@@ -1,9 +1,8 @@
 engine.prop.base = {
   name: 'base',
   construct: function ({
-    angle = 0,
     destination = engine.audio.mixer.bus.props(),
-    radius = 0,
+    radius = this.radius || 0,
     token,
     x = 0,
     y = 0,
@@ -12,24 +11,11 @@ engine.prop.base = {
   } = {}) {
     const context = engine.audio.context()
 
-    this.acceleration = 0
-    this.accelerationDelta = 0
-    this.angle = angle
-    this.angleDelta = 0
     this.instantiated = true
-    this.jerk = 0
-    this.jerkDelta = 0
     this.periodic = {}
     this.radius = radius
-    this.shouldCull = false
     this.spawnAngle = this.angle
-    this.spawnX = x
-    this.spawnY = y
-    this.spawnZ = z
     this.token = token
-    this.velocity = 0
-    this.velocityDelta = 0
-    this.willCull = false
     this.x = x
     this.y = y
     this.z = z
@@ -45,6 +31,8 @@ engine.prop.base = {
 
     this.output.gain.value = engine.const.zeroGain
     engine.audio.ramp.linear(this.output.gain, 1, engine.const.propFadeDuration)
+
+    engine.utility.physical.decorate(this)
 
     this.recalculate()
     this.onConstruct(options)
@@ -118,7 +106,9 @@ engine.prop.base = {
   recalculate: function () {
     const position = engine.position.get()
 
-    this.relative = engine.utility.vector3d.create(this)
+    this.updatePhysics()
+
+    this.relative = this.vector()
       .subtract(position)
       .subtractRadius(this.radius)
       .rotateEuler({
@@ -154,39 +144,6 @@ engine.prop.base = {
 
     if (paused) {
       return this
-    }
-
-    if (this.angleDelta) {
-      this.angle += this.angleDelta
-      this.angleDelta = 0
-    }
-
-    if (this.jerkDelta) {
-      this.jerk += this.jerkDelta
-      this.jerkDelta = 0
-    }
-
-    if (this.jerk) {
-      this.accelerationDelta = (this.accelerationDelta || 0) + this.jerk
-    }
-
-    if (this.accelerationDelta) {
-      this.acceleration += this.accelerationDelta
-      this.accelerationDelta = 0
-    }
-
-    if (this.acceleration) {
-      this.velocityDelta = (this.velocityDelta || 0) + this.acceleration
-    }
-
-    if (this.velocityDelta) {
-      this.velocity += this.velocityDelta
-      this.velocityDelta = 0
-    }
-
-    if (this.velocity) {
-      this.x += Math.cos(this.angle) * this.velocity * delta
-      this.y += Math.sin(this.angle) * this.velocity * delta
     }
 
     this.recalculate()

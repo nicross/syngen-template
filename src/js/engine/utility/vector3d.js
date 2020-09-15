@@ -148,7 +148,7 @@ engine.utility.vector3d.prototype = {
       return engine.utility.vector3d.create()
     }
 
-    return this.multiply(1 - (radius / distance))
+    return this.scale(1 - (radius / distance))
   },
 }
 

@@ -82,7 +82,6 @@ This repository is under active development.
 Future updates should include:
 
 - Adding JSDoc comments to high-level engine systems and utilities
-- Creating an `engine.utility.physical` decorator to grant physics to any object
 - Aligning example projects with engine changes
 
 ### Updating syngen

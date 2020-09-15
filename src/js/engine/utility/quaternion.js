@@ -140,6 +140,9 @@ engine.utility.quaternion.prototype = {
   inverse: function () {
     return this.conjugate().scale(1 / this.distance2())
   },
+  isZero: function () {
+    return !this.w && !this.x && !this.y && !this.z
+  },
   multiply: function ({
     w = 0,
     x = 0,
