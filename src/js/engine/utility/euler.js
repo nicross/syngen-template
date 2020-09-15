@@ -15,6 +15,9 @@ engine.utility.euler.prototype = {
     this.yaw = yaw
     return this
   },
+  isZero: function () {
+    return !this.pitch && !this.roll && !this.yaw
+  },
   scale: function (scalar = 0) {
     return engine.utility.euler.create({
       pitch: this.pitch * scalar,

@@ -51,13 +51,6 @@ engine.utility.vector3d.prototype = {
   } = {}) {
     return ((this.x - x) ** 2) + ((this.y - y) ** 2) + ((this.z - z) ** 2)
   },
-  divide: function (scalar = 0) {
-    return engine.utility.vector3d.create({
-      x: this.x / scalar,
-      y: this.y / scalar,
-      z: this.z / scalar,
-    })
-  },
   dotProduct: function ({
     x = 0,
     y = 0,
@@ -92,12 +85,8 @@ engine.utility.vector3d.prototype = {
   } = {}) {
     return (this.x == x) && (this.y == y) && (this.z == z)
   },
-  multiply: function (scalar = 0) {
-    return engine.utility.vector3d.create({
-      x: this.x * scalar,
-      y: this.y * scalar,
-      z: this.z * scalar,
-    })
+  isZero: function () {
+    return !this.x && !this.y && !this.z
   },
   normalize: function () {
     return this.divide(this.distance())
@@ -119,6 +108,13 @@ engine.utility.vector3d.prototype = {
         quaternion.inverse()
       )
     )
+  },
+  scale: function (scalar = 0) {
+    return engine.utility.vector3d.create({
+      x: this.x * scalar,
+      y: this.y * scalar,
+      z: this.z * scalar,
+    })
   },
   set: function ({
     x = 0,

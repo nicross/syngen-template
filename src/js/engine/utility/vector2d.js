@@ -56,12 +56,6 @@ engine.utility.vector2d.prototype = {
   } = {}) {
     return ((this.x - x) ** 2) + ((this.y - y) ** 2)
   },
-  divide: function (scalar = 0) {
-    return engine.utility.vector2d.create({
-      x: this.x / scalar,
-      y: this.y / scalar,
-    })
-  },
   dotProduct: function ({
     x = 0,
     y = 0,
@@ -74,11 +68,8 @@ engine.utility.vector2d.prototype = {
   } = {}) {
     return (this.x == x) && (this.y == y)
   },
-  multiply: function (scalar = 0) {
-    return engine.utility.vector2d.create({
-      x: this.x * scalar,
-      y: this.y * scalar,
-    })
+  isZero: function () {
+    return !this.x && !this.y
   },
   normalize: function () {
     return this.divide(this.distance())
@@ -90,6 +81,12 @@ engine.utility.vector2d.prototype = {
     return engine.utility.vector2d.create({
       x: (this.x * cos) - (this.y * sin),
       y: (this.y * cos) + (this.x * sin),
+    })
+  },
+  scale: function (scalar = 0) {
+    return engine.utility.vector2d.create({
+      x: this.x * scalar,
+      y: this.y * scalar,
     })
   },
   set: function ({

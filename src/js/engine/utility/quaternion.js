@@ -9,6 +9,7 @@ engine.utility.quaternion.fromEuler = function ({
   roll = 0,
   yaw = 0,
 } = {}, sequence = engine.const.eulerToQuaternion) {
+  // SEE: https://github.com/infusion/Quaternion.js/blob/master/quaternion.js
   sequence = sequence.toUpperCase()
 
   const x = roll / 2,
