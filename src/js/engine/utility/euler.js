@@ -73,8 +73,14 @@ engine.utility.euler.prototype = {
     this.yaw = yaw
     return this
   },
+  forward: function () {
+    return engine.utility.vector3d.unitX().rotateEuler(this)
+  },
   isZero: function () {
     return !this.pitch && !this.roll && !this.yaw
+  },
+  right: function () {
+    return engine.utility.vector3d.unitY().rotateEuler(this)
   },
   scale: function (scalar = 0) {
     return engine.utility.euler.create({
@@ -92,5 +98,8 @@ engine.utility.euler.prototype = {
     this.roll = roll
     this.yaw = yaw
     return this
+  },
+  up: function () {
+    return engine.utility.vector3d.unitZ().rotateEuler(this)
   },
 }

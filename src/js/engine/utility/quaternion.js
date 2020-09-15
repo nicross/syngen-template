@@ -134,6 +134,9 @@ engine.utility.quaternion.prototype = {
   } = {}) {
     return (this.w == w) && (this.x == x) && (this.y == y) && (this.z == z)
   },
+  forward: function () {
+    return engine.utility.vector3d.unitX().rotateQuaternion(this)
+  },
   inverse: function () {
     return this.conjugate().scale(1 / this.distance2())
   },
@@ -161,6 +164,9 @@ engine.utility.quaternion.prototype = {
       z: this.z * scalar,
     })
   },
+  right: function () {
+    return engine.utility.vector3d.unitY().rotateQuaternion(this)
+  },
   set: function ({
     w = 0,
     x = 0,
@@ -185,5 +191,8 @@ engine.utility.quaternion.prototype = {
       y: this.y - y,
       z: this.z - z,
     })
+  },
+  up: function () {
+    return engine.utility.vector3d.unitZ().rotateQuaternion(this)
   },
 }
