@@ -2,14 +2,14 @@ app.controls.gamepad = {
   game: function () {
     if (engine.input.gamepad.hasAxis(2)) {
       return {
-        rotate: engine.input.gamepad.getAxis(2),
+        rotate: engine.input.gamepad.getAxis(2, true),
         x: engine.input.gamepad.getAxis(0),
         y: engine.input.gamepad.getAxis(1, true),
       }
     }
 
     return {
-      rotate: engine.input.gamepad.getAxis(0),
+      rotate: engine.input.gamepad.getAxis(0, true),
       x: 0,
       y: engine.input.gamepad.getAxis(1, true),
     }
