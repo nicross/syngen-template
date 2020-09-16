@@ -152,6 +152,32 @@ engine.utility.quaternion.prototype = {
   isZero: function () {
     return !this.x && !this.y && !this.z
   },
+  lerpFrom: function ({
+    w = 0,
+    x = 0,
+    y = 0,
+    z = 0,
+  } = {}, value = 0) {
+    return engine.utility.quaternion.create({
+      w: engine.utility.lerp(w, this.w, value),
+      x: engine.utility.lerp(x, this.x, value),
+      y: engine.utility.lerp(y, this.y, value),
+      z: engine.utility.lerp(z, this.z, value),
+    })
+  },
+  lerpTo: function ({
+    w = 0,
+    x = 0,
+    y = 0,
+    z = 0,
+  } = {}, value = 0) {
+    return engine.utility.quaternion.create({
+      w: engine.utility.lerp(this.w, w, value),
+      x: engine.utility.lerp(this.x, x, value),
+      y: engine.utility.lerp(this.y, y, value),
+      z: engine.utility.lerp(this.z, z, value),
+    })
+  },
   multiply: function ({
     w = 0,
     x = 0,
@@ -167,14 +193,6 @@ engine.utility.quaternion.prototype = {
   },
   normalize: function () {
     return this.scale(1 / this.distance())
-  },
-  scale: function (scalar = 0) {
-    return engine.utility.quaternion.create({
-      w: this.w * scalar,
-      x: this.x * scalar,
-      y: this.y * scalar,
-      z: this.z * scalar,
-    })
   },
   right: function () {
     return engine.utility.vector3d.unitY().rotateQuaternion(this)
@@ -207,4 +225,10 @@ engine.utility.quaternion.prototype = {
   up: function () {
     return engine.utility.vector3d.unitZ().rotateQuaternion(this)
   },
+}
+
+engine.utility.quaternion.identity = function (...args) {
+  return Object.create(this.prototype).construct({
+    w: 1,
+  })
 }
