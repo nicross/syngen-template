@@ -26,38 +26,38 @@ engine.utility.euler.fromQuaternion = function ({
     case 'XYZ':
       return this.create({
         pitch: Math.asin(2 * (xz + wy)),
-        roll: Math.atan2(2 * (xy - wz), w2 + x2 - y2 - z2),
-        yaw: Math.atan2(2 * (yz - wx), w2 - x2 - y2 + z2),
+        roll: Math.atan2(-2 * (yz - wx), w2 - x2 - y2 + z2),
+        yaw: Math.atan2(-2 * (xy - wz), w2 + x2 - y2 - z2),
       })
     case 'XZY':
       return this.create({
-        pitch: Math.atan2(2 * (yz + wx), w2 - x2 + y2 - z2),
-        roll: Math.atan2(2 * (xz + wy), w2 + x2 - y2 - z2),
+        pitch: Math.atan2(2 * (xz + wy), w2 + x2 - y2 - z2),
+        roll: Math.atan2(2 * (yz + wx), w2 - x2 + y2 - z2),
         yaw: Math.asin(-2 * (xy - wz)),
       })
     case 'YXZ':
       return this.create({
-        pitch: Math.atan2(2 * (xy + wz), w2 - x2 + y2 - z2),
+        pitch: Math.atan2(2 * (xz + wy), w2 - x2 - y2 + z2),
         roll: Math.asin(-2 * (yz - wx)),
-        yaw: Math.atan2(2 * (xz + wy), w2 - x2 - y2 + z2),
+        yaw: Math.atan2(2 * (xy + wz), w2 - x2 + y2 - z2),
       })
     case 'YZX':
       return this.create({
-        pitch: Math.atan2(-2 * (yz - wx), w2 - x2 + y2 - z2),
-        roll: Math.atan2(-2 * (xz - wy), w2 + x2 - y2 - z2),
+        pitch: Math.atan2(-2 * (xz - wy), w2 + x2 - y2 - z2),
+        roll: Math.atan2(-2 * (yz - wx), w2 - x2 + y2 - z2),
         yaw: Math.asin(2 * (xy + wz)),
       })
     case 'ZXY':
       return this.create({
-        pitch: Math.atan2(-2 * (xy - wz), w2 - x2 + y2 - z2),
+        pitch: Math.atan2(-2 * (xz - wy), w2 - x2 - y2 + z2),
         roll: Math.asin(2 * (yz + wx)),
-        yaw: Math.atan2(-2 * (xz - wy), w2 - x2 - y2 + z2),
+        yaw: Math.atan2(-2 * (xy - wz), w2 - x2 + y2 - z2),
       })
     case 'ZYX':
       return this.create({
         pitch: Math.asin(-2 * (xz - wy)),
-        roll: Math.atan2(2 * (xy + wz), w2 + x2 - y2 - z2),
-        yaw: Math.atan2(2 * (yz + wx), 2 * (yz + wx)),
+        roll: Math.atan2(2 * (yz + wx), w2 - x2 - y2 + z2),
+        yaw: Math.atan2(2 * (xy + wz), w2 + x2 - y2 - z2),
       })
   }
 }
