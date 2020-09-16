@@ -1,46 +1,52 @@
 app.controls = (() => {
-  let uiCache = {},
-    uiDelta = {}
-
-  let gameCache = {
+  const gameDefaults = {
     rotate: 0,
     x: 0,
     y: 0,
   }
 
+  let uiCache = {},
+    uiDelta = {}
+
+  let gameCache = {...gameDefaults}
+
+  function updateGame() {
+    gameCache = {
+      ...gameDefaults,
+      ...app.controls.gamepad.game(),
+      ...app.controls.keyboard.game(),
+    }
+  }
+
+  function updateUi() {
+    const values = {
+      ...app.controls.gamepad.ui(),
+      ...app.controls.keyboard.ui(),
+    }
+
+    uiDelta = {}
+
+    for (const key in values) {
+      if (!uiCache[key]) {
+        uiDelta[key] = values[key]
+      }
+    }
+
+    uiCache = values
+  }
+
   return {
     game: () => ({...gameCache}),
     ui: () => ({...uiDelta}),
-    update: function () {
-      return this.updateGame().updateUi()
-    },
-    updateGame: function () {
-      gameCache = {
-        rotate: 0,
-        x: 0,
-        y: 0,
-        ...this.gamepad.game(),
-        ...this.keyboard.game(),
-      }
-
+    reset: function () {
+      gameCache = {}
+      uiCache = {}
+      uiDelta = {}
       return this
     },
-    updateUi: function () {
-      const values = {
-        ...this.gamepad.ui(),
-        ...this.keyboard.ui(),
-      }
-
-      uiDelta = {}
-
-      for (const key in values) {
-        if (!uiCache[key]) {
-          uiDelta[key] = values[key]
-        }
-      }
-
-      uiCache = values
-
+    update: function () {
+      updateGame()
+      updateUi()
       return this
     },
   }
