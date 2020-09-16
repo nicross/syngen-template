@@ -95,7 +95,7 @@ engine.utility.quaternion.prototype = {
     })
   },
   construct: function ({
-    w = 0,
+    w = 1,
     x = 0,
     y = 0,
     z = 0,
@@ -150,7 +150,7 @@ engine.utility.quaternion.prototype = {
     return this.conjugate().scale(scalar)
   },
   isZero: function () {
-    return !this.w && !this.x && !this.y && !this.z
+    return !this.x && !this.y && !this.z
   },
   multiply: function ({
     w = 0,
