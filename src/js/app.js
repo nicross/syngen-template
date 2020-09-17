@@ -13,3 +13,5 @@ const app = {
   },
   utility: {},
 }
+
+engine.ready(() => app.activate())
