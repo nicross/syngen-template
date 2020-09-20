@@ -155,7 +155,7 @@ engine.streamer = (() => {
       }
       return this
     },
-    update: (force = false) => {
+    update: function (force = false) {
       const positionVector = engine.position.getVector()
 
       if (!force && !shouldForce && currentVector.equals(positionVector)) {

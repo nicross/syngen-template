@@ -199,7 +199,7 @@ engine.utility.octree.prototype = {
   } = {}) {
     const items = []
 
-    if (!this.intersects({height, width, x, y})) {
+    if (!this.intersects({depth, height, width, x, y, z})) {
       return items
     }
 
