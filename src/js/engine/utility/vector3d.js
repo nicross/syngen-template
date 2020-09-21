@@ -88,6 +88,13 @@ engine.utility.vector3d.prototype = {
   } = {}) {
     return (this.x == x) && (this.y == y) && (this.z == z)
   },
+  inverse: function () {
+    return engine.utility.vector3d.create({
+      x: -this.x,
+      y: -this.y,
+      z: -this.z,
+    })
+  },
   isZero: function () {
     return !this.x && !this.y && !this.z
   },

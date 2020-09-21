@@ -71,6 +71,12 @@ engine.utility.vector2d.prototype = {
   } = {}) {
     return (this.x == x) && (this.y == y)
   },
+  inverse: function () {
+    return engine.utility.vector2d.create({
+      x: -this.x,
+      y: -this.y,
+    })
+  },
   isZero: function () {
     return !this.x && !this.y
   },
