@@ -99,7 +99,13 @@ engine.utility.vector3d.prototype = {
     return !this.x && !this.y && !this.z
   },
   normalize: function () {
-    return this.divide(this.distance())
+    const distance = this.distance()
+
+    if (!distance) {
+      return this.clone()
+    }
+
+    return this.scale(1 / distance)
   },
   rotateEuler: function (euler, sequence) {
     return this.rotateQuaternion(
