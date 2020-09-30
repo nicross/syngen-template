@@ -82,7 +82,7 @@ This repository is under active development.
 Future updates should include:
 
 - Adding JSDoc comments to high-level engine systems and utilities
-- Aligning example projects with engine changes
+- Decoupling the engine from this template repository so it can be used as an ES6 module
 
 ### Updating syngen
 This repository assumes that all code in `src/css`, `src/js/app`, and `src/js/content` is your own.
