@@ -1,4 +1,4 @@
-# syngen
+# syngen-template
 A spatial sound and synthesis framework for accessible audio game development and experience design.
 
 ## Disclaimer
@@ -84,7 +84,7 @@ Future updates should include:
 - Adding JSDoc comments to high-level engine systems and utilities
 - Decoupling the engine from this template repository so it can be used as an ES6 module
 
-### Updating syngen
+### Updating syngen-template
 This repository assumes that all code in `src/css`, `src/js/app`, and `src/js/content` is your own.
 The default files in those directories simply provide a starting point for new projects.
 
@@ -94,6 +94,7 @@ Occasionally these updates may require copying changes to your `Gulpfile.js` for
 
 ### Example projects
 - [Audo](https://github.com/nicross/audo) – Endless audio racing game
+- [Auraboros](https://github.com/nicross/auraboros) – Endless audio bullet hell
 - [Kaleidophone](https://github.com/nicross/kaleidophone) – Relaxing generative audio toy
 - [S.E.A.](https://github.com/nicross/sea) – Relaxing audio watercraft simulator
 
