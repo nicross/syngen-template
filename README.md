@@ -6,8 +6,7 @@ This repository provides a basic template for getting started with any project.
 
 Its JavaScript code is split into three namespaces:
 - The `engine` namespace is an alias for [syngen](https://github.com/nicross/syngen).
-It provides tools to quickly build synths and position them as props on a three-dimensional stage.
-Its event loop fires each frame to update props and core systems and can be subscribed to by userland code.
+Please reference its [API documentation](https://syngen.shiftbacktick.io/) to learn more.
 _Do not_ modify this code if you plan to receive updates in the future.
 - The `content` namespace is a blank canvas intended for organizing userland code like props and additional systems.
 For larger projects it's helpful to divide it into smaller sub-namespaces.
