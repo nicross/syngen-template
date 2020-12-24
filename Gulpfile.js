@@ -149,6 +149,6 @@ function getContentJs() {
 function getEngineJs() {
   return [
     'node_modules/syngen/dist/syngen.js',
-    'src/js/engine/alias.js',
+    'src/js/engine.js',
   ]
 }
