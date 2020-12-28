@@ -75,6 +75,11 @@ gulp electron
 gulp electron-build
 ```
 
+### Start web server
+```sh
+gulp serve
+```
+
 #### Command line flags
 | Flag | Description |
 | - | - |

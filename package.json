@@ -1,6 +1,6 @@
 {
   "name": "syngen-template",
-  "version": "0.1.2",
+  "version": "0.1.0",
   "description": "",
   "license": "UNLICENSED",
   "main": "electron/main.js",
@@ -15,6 +15,7 @@
     "gulp-if": "^3.0.0",
     "gulp-iife": "^0.4.0",
     "gulp-run-electron": "^3.0.2",
+    "gulp-serve": "^1.4.0",
     "gulp-uglify-es": "^1.0.4",
     "gulp-zip": "^5.0.1",
     "syngen": "^0.1.2",

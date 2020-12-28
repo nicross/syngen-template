@@ -7,6 +7,7 @@ const gulpif = require('gulp-if')
 const iife = require('gulp-iife')
 const package = require('./package.json')
 const packager = require('electron-packager')
+const serve = require('gulp-serve')
 const uglify = require('gulp-uglify-es').default
 const zip = require('gulp-zip')
 
@@ -101,6 +102,8 @@ gulp.task('electron', () => {
 })
 
 gulp.task('electron-build', gulp.series('build', 'electron'))
+
+gulp.task('serve', serve('public'))
 
 gulp.task('watch', () => {
   gulp.watch('src/**', gulp.series('build'))
