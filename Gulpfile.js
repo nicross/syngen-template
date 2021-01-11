@@ -109,6 +109,8 @@ gulp.task('watch', () => {
   gulp.watch('src/**', gulp.series('build'))
 })
 
+gulp.task('dev', gulp.parallel('serve', 'watch'))
+
 function getCss() {
   const srcs = [
     'src/css/reset.css',
