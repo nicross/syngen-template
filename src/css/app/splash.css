@@ -1,0 +1,36 @@
+.a-splash {
+  align-items: center;
+  text-align: center;
+}
+  .a-splash--details {
+    bottom: 2rem;
+    font-family: monospace;
+    font-size: 0.75em;
+    font-weight: 300;
+    left: 2rem;
+    letter-spacing: 0;
+    padding: 0.5rem 0.75rem;
+    position: absolute;
+    text-align: left;
+  }
+  .a-splash--instruction {
+    animation: a-splash--instruction 1s ease-in-out 0s infinite alternate both;
+    bottom: 2rem;
+    line-height: 2;
+    padding: 0.5em 0.75em;
+    position: absolute;
+    right: 2rem;
+    text-transform: uppercase;
+  }
+  .a-splash--logo {
+    font-size: 4em;
+  }
+
+@keyframes a-splash--instruction {
+  0% {
+   opacity: 0.5;
+  }
+  100% {
+    opacity: 1.0;
+  }
+}

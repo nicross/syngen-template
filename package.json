@@ -1,0 +1,27 @@
+{
+  "name": "syngen-template",
+  "version": "0.0.0",
+  "description": "",
+  "license": "Unlicense",
+  "main": "electron/main.js",
+  "private": true,
+  "devDependencies": {
+    "electron": "^23.1.0",
+    "electron-packager": "^15.5.2",
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-footer": "^2.1.0",
+    "gulp-header": "^2.0.9",
+    "gulp-if": "^3.0.0",
+    "gulp-iife": "^0.4.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-run-electron": "^3.0.2",
+    "gulp-serve": "^1.4.0",
+    "gulp-uglify-es": "^3.0.0",
+    "gulp-zip": "^5.1.0",
+    "merge-stream": "^2.0.0",
+    "syngen": "^2.0.0-alpha",
+    "yargs": "^17.7.0"
+  }
+}

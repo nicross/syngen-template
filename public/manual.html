@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>syngen-template Documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="./favicon.png" />
+    <style>
+      *, *::after, *::before {
+        background: transparent;
+        border: 0;
+        box-sizing: border-box;
+        color: inherit;
+        font: inherit;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        background-color: #FFFFFF;
+        font-family: sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1.5;
+      }
+
+      main ::selection {
+        background-color: #FF0069;
+        color: #FFFFFF;
+        text-decoration-color: #FFFFFF;
+      }
+
+      a {
+        color: #FF0069;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+
+      code {
+        font-family: monospace;
+      }
+
+      details > * + * {
+        margin-top: 1.25em;
+      }
+
+      em {
+        font-family: sans-serif;
+        font-style: italic;
+      }
+
+      h2 {
+        font-size: 2em;
+      }
+
+      h3 {
+        font-size: 1.5em;
+        margin-top: 3rem;
+      }
+
+      h4 {
+        font-size: 1.25em;
+        margin-top: 3rem;
+      }
+
+      kbd {
+        border: 1px solid #FF0069;
+        border-radius: 0.25em;
+        display: inline-block;
+        font-family: monospace;
+        padding: 0 0.5em;
+      }
+
+      strong, th {
+        font-family: sans-serif;
+        font-weight: 700;
+      }
+
+      section {
+        margin: 0 auto;
+        max-width: calc(60ch + 4em);
+        padding: 3em 1em;
+      }
+
+      section + section {
+        border-top: 1px dotted #CCCCCC;
+      }
+
+      section > * + *:not(h3):not(h4) {
+        margin-top: 1.25em;
+      }
+
+      section > h2 + *,
+      section > h3 + *,
+      section > h4 + * {
+        margin-top: 0.75em !important;
+      }
+
+      table, td, th {
+        border: 1px solid #000000;
+        border-collapse: collapse;
+      }
+
+      td, th {
+        padding: 0.25em 0.5em;
+      }
+
+      th {
+        text-align: left;
+      }
+
+      ul {
+        list-style-position: inside;
+        padding-left: 1.5em;
+      }
+
+      .hero {
+        align-items: center;
+        background-color: #000000;
+        color: #FFFFFF;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        line-height: 1.25;
+        padding: 4em 1em;
+        text-align: center;
+      }
+        .hero--author {
+          font-family: monospace;
+          margin-top: 2em;
+        }
+        .hero--logo {
+          font-family: monospace;
+          font-size: 3em;
+          text-transform: uppercase;
+        }
+
+      .scrollable {
+        max-width: 100%;
+        overflow: auto;
+        white-space: nowrap;
+      }
+
+      @media (min-width: 20rem) {
+        :root {
+          font-size: calc(1rem + ((1vw - 0.2rem) * 0.25));
+        }
+      }
+
+      @media (min-width: 48rem) {
+        section {
+          padding-left: 2em;
+          padding-right: 2em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <h1>
+        <div class="hero--lockup">
+          <div class="hero--logo">syngen-template</div>
+          <div class="hero--author">by shiftBacktick</div>
+        </div>
+      </h1>
+    </header>
+
+    <main>
+      <section>
+        <h2>Introduction</h2>
+      </section>
+
+      <section>
+        <h2>System Requirements</h2>
+        <p>This is best experienced with headphones and a gamepad.</p>
+        <p>Real-time synthesis is an <em>extremely</em> CPU-intensive process. It will attempt to run on any machine that meets its minimum requirements; however, you may experience stuttering or drop-outs when running below the recommended requirements.</p>
+
+        <h3>Minimum System Requirements</h3>
+        <table>
+          <tr>
+            <th>CPU</th>
+            <td>SSE2 capable (64-bit)</td>
+          </tr>
+          <tr>
+            <th>RAM</th>
+            <td>2 GB</td>
+          </tr>
+        </table>
+
+        <h3>Recommended System Requirements</h3>
+        <table>
+          <tr>
+            <th>CPU</th>
+            <td>3.5 GHz Quad-Core (64-bit)</td>
+          </tr>
+          <tr>
+            <th>RAM</th>
+            <td>4 GB</td>
+          </tr>
+        </table>
+
+        <h3>Browser Support</h3>
+        <p>The HTML5 build is intended to be played in a recent version of a Chromium-based browser, such as Google Chrome, Microsoft Edge, or Opera. Browser extensions that alter page behavior are not recommended. Other browsers must support modern JavaScript features and the current Web Audio API specification.</p>
+      </section>
+
+      <section>
+        <h2>How to Play</h2>
+      </section>
+
+      <section>
+        <h2>Controls</h2>
+        <div class="scrollable">
+          <table>
+            <thead>
+              <tr>
+                <th>Action</th>
+                <th>Button</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
