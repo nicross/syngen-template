@@ -36,8 +36,7 @@ gulp.task('build-js', () => {
     concat('scripts.min.js')
   ).pipe(
     footer(
-        `;app.name=()=>'${package.name}';`
-      + `;app.version=()=>'${package.version + (isDebug ? '-debug' : '')}';`
+      `;app.version=()=>'${package.version + (isDebug ? '-debug' : '')}';`
     )
   ).pipe(
     gulpif(!isDebug, iife(), header("'use strict';\n\n"))

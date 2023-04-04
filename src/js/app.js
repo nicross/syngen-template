@@ -22,7 +22,7 @@ const app = (() => {
     },
     isActive: () => isActive,
     isElectron: () => typeof ElectronApi != 'undefined',
-    name: () => 'syngen-template', // Replaced via Gulpfile.js
+    name: () => 'syngen-template',
     quit: function () {
       if (this.isElectron()) {
         ElectronApi.quit()

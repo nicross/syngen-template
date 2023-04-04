@@ -29,7 +29,7 @@ app.storage = (() => {
 
       return this
     },
-    clearG: function (key) {
+    clear: function (key) {
       set(key, null)
 
       return this

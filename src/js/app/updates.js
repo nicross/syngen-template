@@ -23,7 +23,7 @@ app.updates = (() => {
     })
 
     // Upgrade storage
-    app.storage.clone(storageVersion, appVersion)
+    app.storage.cloneVersion(storageVersion, appVersion)
       .setVersion(appVersion)
 
     // Apply updates
