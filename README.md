@@ -21,6 +21,11 @@ To get started, please use [npm](https://nodejs.org) to install the required dep
 npm install
 ```
 
+Then you can build and play the project:
+```sh
+npx gulp electron-rebuild
+```
+
 ### Common tasks
 Common tasks have been automated with [Gulp](https://gulpjs.com):
 
@@ -46,7 +51,7 @@ gulp electron
 
 #### Build and open in Electron
 ```sh
-gulp electron-build
+gulp electron-rebuild
 ```
 
 ### Start web server
