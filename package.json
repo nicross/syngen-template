@@ -6,19 +6,20 @@
   "main": "electron/main.js",
   "private": true,
   "devDependencies": {
-    "electron": "^11.1.1",
-    "electron-packager": "^14.2.1",
-    "gulp": "^4.0.2",
+    "electron": "^38.4.0",
+    "electron-packager": "^17.1.2",
+    "gulp": "^5.0.1",
     "gulp-clean-css": "^4.3.0",
     "gulp-concat": "^2.6.1",
+    "gulp-footer": "^2.1.0",
     "gulp-header": "^2.0.9",
     "gulp-if": "^3.0.0",
     "gulp-iife": "^0.4.0",
     "gulp-run-electron": "^3.0.2",
     "gulp-serve": "^1.4.0",
-    "gulp-uglify-es": "^1.0.4",
-    "gulp-zip": "^5.0.1",
-    "syngen": "^0.1.2",
-    "yargs": "^15.3.1"
+    "gulp-uglify-es": "^3.0.0",
+    "gulp-zip": "^5.1.0",
+    "syngen": "^0.2.1",
+    "yargs": "^18.0.0"
   }
 }

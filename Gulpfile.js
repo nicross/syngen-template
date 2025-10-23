@@ -1,6 +1,7 @@
 const cleancss = require('gulp-clean-css')
 const concat = require('gulp-concat')
 const electron = require('gulp-run-electron')
+const footer = require('gulp-footer')
 const gulp = require('gulp')
 const header = require('gulp-header')
 const gulpif = require('gulp-if')
@@ -9,9 +10,10 @@ const package = require('./package.json')
 const packager = require('electron-packager')
 const serve = require('gulp-serve')
 const uglify = require('gulp-uglify-es').default
+const yargs = require('yargs')
 const zip = require('gulp-zip')
 
-const argv = require('yargs').argv,
+const argv = yargs(process.argv).parse(),
   isDebug = argv.debug === true
 
 gulp.task('build-css', () => {
@@ -31,6 +33,10 @@ gulp.task('build-js', () => {
     getJs()
   ).pipe(
     concat('scripts.min.js')
+  ).pipe(
+    footer(
+      `;app.version=()=>'${package.version + (isDebug ? '-debug' : '')}';`
+    )
   ).pipe(
     gulpif(!isDebug, iife(), header("'use strict';\n\n"))
   ).pipe(
@@ -70,19 +76,20 @@ gulp.task('dist-electron', async () => {
   })
 
   // XXX: Archives have no root directory
-  paths.forEach((path) => {
-    gulp.src(path + '/**/*').pipe(
+  return Promise.all(paths.map((path) => {
+    return gulp.src(path + '/**/*').pipe(
       zip(path.replace('dist\\', '') + '.zip')
     ).pipe(
       gulp.dest('dist')
     )
-  })
+  }))
 })
 
 gulp.task('dist-html5', () => {
   // XXX: Archive has no root directory
   return gulp.src([
     'public/favicon.png',
+    'public/font/*.woff',
     'public/index.html',
     'public/scripts.min.js',
     'public/styles.min.css',
@@ -106,7 +113,7 @@ gulp.task('electron-build', gulp.series('build', 'electron'))
 gulp.task('serve', serve('public'))
 
 gulp.task('watch', () => {
-  gulp.watch('src/**', gulp.series('build'))
+  gulp.watch(['src/**'], gulp.series('build'))
 })
 
 gulp.task('dev', gulp.parallel('serve', 'watch'))
