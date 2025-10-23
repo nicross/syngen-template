@@ -12,9 +12,10 @@ const packager = require('electron-packager')
 const rename = require('gulp-rename')
 const serve = require('gulp-serve')
 const uglify = require('gulp-uglify-es').default
+const yargs = require('yargs')
 const zip = require('gulp-zip')
 
-const argv = require('yargs').argv,
+const argv = yargs(process.argv).parse(),
   isDebug = argv.debug === true
 
 gulp.task('build-css', () => {
@@ -59,7 +60,7 @@ gulp.task('dist-electron', async () => {
     arch: 'x64',
     asar: true,
     dir: '.',
-    icon: '../assets/icon/icon',
+    icon: 'assets/icon/favicon',
     ignore: [
       '.gitignore',
       'dist',
@@ -76,7 +77,7 @@ gulp.task('dist-electron', async () => {
   })
 
   // XXX: Archives have no root directory
-  paths.forEach((path) => {
+  return Promise.all(paths.map((path) => {
     const build = gulp.src(path + '/**/*')
 
     const manual = gulp.src([
@@ -88,12 +89,12 @@ gulp.task('dist-electron', async () => {
       })
     )
 
-    merge(build, manual).pipe(
+    return merge(build, manual).pipe(
       zip(path.replace('dist\\', '') + '.zip')
     ).pipe(
       gulp.dest('dist')
     )
-  })
+  }))
 })
 
 gulp.task('dist-html5', () => {
